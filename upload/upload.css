@@ -53,20 +53,30 @@ body {
     border-bottom: 2px solid var(--gray-200);
 }
 
+/* ===== TOMBOL KEMBALI KE BERANDA ===== */
 .back-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: var(--gray-500);
+    gap: 10px;
+    padding: 10px 24px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50px;
     text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 0.9rem;
     transition: var(--transition);
-    margin-bottom: 12px;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.30);
+    margin-bottom: 16px;
 }
 .back-link:hover {
-    color: var(--primary);
-    transform: translateX(-4px);
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(37,99,235,0.40);
+    color: #fff;
+}
+.back-link i {
+    font-size: 0.9rem;
 }
 
 .upload-header h1 {
@@ -417,5 +427,9 @@ body {
         left: 16px;
         right: 16px;
         bottom: 16px;
+    }
+    .back-link {
+        padding: 8px 18px;
+        font-size: 0.8rem;
     }
 }
