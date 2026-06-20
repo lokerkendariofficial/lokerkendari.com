@@ -156,7 +156,7 @@ function getFormData() {
     };
 }
 
-// ===== SUBMIT FORM =====
+// ===== SUBMIT FORM (DENGAN REDIRECT) =====
 form.addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -167,6 +167,11 @@ form.addEventListener('submit', function(e) {
     if (!data.category) { showToast('Pilih kategori.', 'error'); category.focus(); return; }
     if (!data.description) { showToast('Deskripsi harus diisi.', 'error'); description.focus(); return; }
     if (data.description.length < 10) { showToast('Deskripsi minimal 10 karakter.', 'error'); description.focus(); return; }
+
+    // Nonaktifkan tombol submit & tampilkan loading
+    const submitBtn = form.querySelector('.btn-submit');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
 
     // Simpan ke localStorage
     const newItem = {
@@ -190,7 +195,13 @@ form.addEventListener('submit', function(e) {
     previewSection.style.display = 'none';
     previewBox.innerHTML = '';
 
-    showToast('✅ Informasi berhasil dikirim!', 'success');
+    // Toast sukses + proses
+    showToast('✅ Informasi berhasil dikirim! Sedang diproses...', 'success');
+
+    // Redirect ke beranda setelah 2 detik
+    setTimeout(() => {
+        window.location.href = 'https://lokerkendariofficial.github.io/lokerkendari.com/';
+    }, 2000);
 });
 
 // ===== TOAST SYSTEM =====
