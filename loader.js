@@ -1,6 +1,4 @@
 // ===== LOADER JS =====
-// Memuat semua komponen HTML dari folder components/ ke dalam #app
-
 const components = [
     'navbar',
     'hero',
@@ -15,24 +13,38 @@ const components = [
 
 async function loadComponents() {
     const app = document.getElementById('app');
+    if (!app) {
+        console.error('❌ Elemen #app tidak ditemukan!');
+        return;
+    }
+
     let html = '';
+    let successCount = 0;
+    let failCount = 0;
 
     for (const comp of components) {
         try {
             const response = await fetch(`components/${comp}.html`);
-            if (!response.ok) throw new Error(`Gagal memuat ${comp}.html`);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+            }
             const content = await response.text();
             html += content;
+            successCount++;
+            console.log(`✅ ${comp}.html dimuat`);
         } catch (error) {
-            console.warn(`⚠️ Komponen ${comp} tidak ditemukan, dilewati.`);
+            failCount++;
+            console.warn(`⚠️ Gagal memuat ${comp}.html:`, error.message);
         }
     }
 
     app.innerHTML = html;
-    console.log('✅ Semua komponen HTML telah dimuat.');
+    console.log(`✅ Komponen dimuat: ${successCount} berhasil, ${failCount} gagal`);
 
-    // 🔥 KIRIM EVENT KE SCRIPT.JS
-    document.dispatchEvent(new CustomEvent('components-loaded'));
+    // Kirim event ke script.js
+    document.dispatchEvent(new CustomEvent('components-loaded', {
+        detail: { successCount, failCount }
+    }));
 }
 
 // Jalankan loader
