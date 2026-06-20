@@ -30,6 +30,9 @@ async function loadComponents() {
 
     app.innerHTML = html;
     console.log('✅ Semua komponen HTML telah dimuat.');
+
+    // 🔥 KIRIM EVENT KE SCRIPT.JS
+    document.dispatchEvent(new CustomEvent('components-loaded'));
 }
 
 // Jalankan loader
