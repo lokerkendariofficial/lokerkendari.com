@@ -1,4 +1,3 @@
-css
 /* ============================================================
    MONITOR CSS - Enterprise Dashboard
    Desain premium terinspirasi Sunbird dcTrack
@@ -1059,6 +1058,126 @@ body {
     color: var(--text);
 }
 
+}
+.chart-bar-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+.chart-bar {
+    width: 100%;
+    max-width: 32px;
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+    transition: height 0.6s ease;
+    position: relative;
+}
+.chart-bar.online {
+    background: var(--success);
+}
+.chart-bar.offline {
+    background: var(--danger);
+}
+.chart-bar.warning {
+    background: var(--warning);
+}
+.chart-bar-label {
+    font-size: 0.5rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    text-align: center;
+    max-width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+}
+.chart-placeholder {
+    color: var(--text-muted);
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+.chart-placeholder i {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+.chart-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    justify-content: center;
+}
+.legend-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+.legend-dot.online { background: var(--success); }
+.legend-dot.offline { background: var(--danger); }
+.legend-dot.warning { background: var(--warning); }
+
+/* ============================================================
+   WIDGET: LOGS
+   ============================================================ */
+.log-container {
+    max-height: 280px;
+    overflow-y: auto;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.75rem;
+}
+.log-container::-webkit-scrollbar {
+    width: 4px;
+}
+.log-container::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+.log-entry {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+.log-entry .log-time {
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    min-width: 65px;
+    flex-shrink: 0;
+    font-weight: 500;
+}
+.log-entry .log-type {
+    font-weight: 700;
+    min-width: 48px;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    padding: 1px 6px;
+    border-radius: 4px;
+    text-align: center;
+}
+.log-entry .log-type.info { color: var(--info); background: var(--info-light); }
+.log-entry .log-type.warn { color: var(--warning); background: var(--warning-light); }
+.log-entry .log-type.error { color: var(--danger); background: var(--danger-light); }
+.log-entry .log-type.success { color: var(--success); background: var(--success-light); }
+.log-entry .log-msg {
+    word-break: break-word;
+    color: var(--text);
+}
+.empty-log {
+    color: var(--text-muted);
+    text-align: cente
+
 /* ============================================================
    WIDGET: PERFORMANCE
    ============================================================ */
@@ -1416,16 +1535,3 @@ body {
         text-align: center;
     }
 }
-
-}
-.log-entry .log-type.info { color: var(--info); background: var(--info-light); }
-.log-entry .log-type.warn { color: var(--warning); background: var(--warning-light); }
-.log-entry .log-type.error { color: var(--danger); background: var(--danger-light); }
-.log-entry .log-type.success { color: var(--success); background: var(--success-light); }
-.log-entry .log-msg {
-    word-break: break-word;
-    color: var(--text);
-}
-.empty-log {
-    color: var(--text-muted);
-    text-align: c
