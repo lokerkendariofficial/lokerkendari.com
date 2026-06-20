@@ -3,8 +3,13 @@ import { loadJobs, initMainEvents } from './js/main.js';
 import { initInbox } from './js/inbox.js';
 import { initExplore } from './js/explore.js';
 
-// Tunggu loader.js selesai memuat komponen HTML
-document.addEventListener('DOMContentLoaded', function() {
+// ===== TUNGGU KOMPONEN HTML DIMUAT OLEH LOADER.JS =====
+// Loader.js akan memicu event 'components-loaded' setelah selesai
+// Jika komponen sudah dimuat sebelum event listener dipasang, langsung inisialisasi
+
+function initApp() {
+    console.log('🚀 Loker Kendari - Inisialisasi...');
+
     // Load data dan render jobs
     loadJobs();
     
@@ -48,5 +53,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    console.log('🚀 Loker Kendari siap!');
-});
+    console.log('✅ Loker Kendari siap!');
+}
+
+// ===== CEK APAKAH KOMPONEN SUDAH DIMUAT =====
+function isAppReady() {
+    const app = document.getElementById('app');
+    // Jika app sudah memiliki anak elemen (komponen telah dimuat)
+    return app && app.children.length > 0;
+}
+
+// ===== STRATEGI LOADING =====
+// 1. Jika komponen sudah dimuat (loader.js selesai lebih cepat), langsung init
+if (isAppReady()) {
+    initApp();
+} else {
+    // 2. Jika belum, tunggu event 'components-loaded' dari loader.js
+    document.addEventListener('components-loaded', function() {
+        console.log('📦 Event components-loaded diterima');
+        initApp();
+    });
+
+    // 3. Fallback: jika event tidak terpancar, coba polling setiap 100ms
+    // (untuk jaga-jaga jika ada error di loader.js)
+    let attempts = 0;
+    const maxAttempts = 50; // 5 detik (50 x 100ms)
+    const fallbackTimer = setInterval(() => {
+        attempts++;
+        if (isAppReady()) {
+            clearInterval(fallbackTimer);
+            console.log('📦 Fallback: komponen terdeteksi');
+            initApp();
+        } else if (attempts >= maxAttempts) {
+            clearInterval(fallbackTimer);
+            console.error('❌ Gagal memuat komponen HTML. Periksa loader.js dan folder components/');
+        }
+    }, 100);
+}
+
