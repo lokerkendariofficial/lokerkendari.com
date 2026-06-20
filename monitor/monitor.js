@@ -1,11 +1,8 @@
 // ============================================================
 // MONITOR.JS - Dashboard Monitoring (Standalone)
-// Tidak bergantung pada file lain di luar folder monitor/
 // ============================================================
 
 // ===== KONFIGURASI =====
-// Daftar file yang akan dipantau (relatif terhadap root)
-// Karena monitor mandiri, kita gunakan data dummy untuk demo
 const JS_FILES = [
     'js/data.js',
     'js/main.js',
@@ -18,8 +15,7 @@ const JS_FILES = [
     'js/error/system-info.js'
 ];
 
-// ===== DATA DUMMY UNTUK DEMO =====
-// (Monitor akan mencoba fetch file asli, tapi jika gagal pakai data ini)
+// ===== DATA DUMMY =====
 const DUMMY_DATA = {
     online: 7,
     offline: 2,
@@ -42,8 +38,11 @@ let fileStatus = [];
 let logEntries = [];
 let healthResults = [];
 let isDebugMode = false;
+let sidebarCollapsed = false;
 
 // ===== DOM REFS =====
+const sidebar = document.getElementById('sidebar');
+const toggleBtn = document.getElementById('toggleSidebar');
 const totalFilesEl = document.getElementById('totalFiles');
 const onlineFilesEl = document.getElementById('onlineFiles');
 const offlineFilesEl = document.getElementById('offlineFiles');
@@ -61,7 +60,47 @@ const connectionStatus = document.getElementById('connectionStatus');
 const headerTime = document.getElementById('headerTime');
 const footerTime = document.getElementById('footerTime');
 
-// ===== UTILITY =====
+// ============================================================
+// SIDEBAR TOGGLE
+// ============================================================
+function toggleSidebar() {
+    sidebarCollapsed = !sidebarCollapsed;
+
+    if (window.innerWidth <= 992) {
+        // Mode mobile: toggle class mobile-open
+        sidebar.classList.toggle('mobile-open');
+        addLog('info', sidebar.classList.contains('mobile-open') ? '📂 Sidebar dibuka' : '📂 Sidebar ditutup');
+    } else {
+        // Mode desktop: toggle collapsed
+        sidebar.classList.toggle('collapsed');
+        addLog('info', sidebar.classList.contains('collapsed') ? '📂 Sidebar collapsed' : '📂 Sidebar expanded');
+    }
+}
+
+// Event listener untuk tombol toggle
+toggleBtn.addEventListener('click', toggleSidebar);
+
+// Tutup sidebar mobile saat klik di luar
+document.addEventListener('click', function(e) {
+    if (window.innerWidth <= 992) {
+        const isClickInside = sidebar.contains(e.target) || toggleBtn.contains(e.target);
+        if (!isClickInside && sidebar.classList.contains('mobile-open')) {
+            sidebar.classList.remove('mobile-open');
+            addLog('info', '📂 Sidebar ditutup (klik di luar)');
+        }
+    }
+});
+
+// Resize handler - reset state saat resize
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 992) {
+        sidebar.classList.remove('mobile-open');
+    }
+});
+
+// ============================================================
+// UTILITY
+// ============================================================
 function formatTime() {
     return new Date().toLocaleTimeString('id-ID', { hour12: false });
 }
@@ -70,7 +109,9 @@ function formatDate() {
     return new Date().toLocaleString('id-ID');
 }
 
-// ===== CLOCK =====
+// ============================================================
+// CLOCK
+// ============================================================
 function updateClock() {
     headerTime.textContent = formatTime();
     footerTime.textContent = formatDate();
@@ -78,7 +119,9 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// ===== CONNECTION STATUS =====
+// ============================================================
+// CONNECTION STATUS
+// ============================================================
 function updateConnectionStatus() {
     const isOnline = navigator.onLine;
     connectionText.textContent = isOnline ? 'Online' : 'Offline';
@@ -88,13 +131,14 @@ updateConnectionStatus();
 window.addEventListener('online', updateConnectionStatus);
 window.addEventListener('offline', updateConnectionStatus);
 
-// ===== FILE CHECKER (Standalone) =====
+// ============================================================
+// FILE CHECKER
+// ============================================================
 async function checkFileStatus() {
     let online = 0;
     let offline = 0;
     let results = [];
 
-    // Coba fetch file asli
     for (const file of JS_FILES) {
         try {
             const res = await fetch(file, { method: 'HEAD', cache: 'no-cache' });
@@ -108,7 +152,6 @@ async function checkFileStatus() {
         }
     }
 
-    // Jika semua gagal (misal offline), gunakan data dummy
     if (results.length === 0 || (online === 0 && offline === 0)) {
         results = DUMMY_DATA.files;
         online = DUMMY_DATA.online;
@@ -147,7 +190,9 @@ function renderFileChart(files) {
     }).join('');
 }
 
-// ===== LOG SYSTEM =====
+// ============================================================
+// LOG SYSTEM
+// ============================================================
 function addLog(type, message) {
     const entry = {
         time: formatTime(),
@@ -180,13 +225,14 @@ function clearLogs() {
     addLog('info', '🗑️ Log dibersihkan');
 }
 
-// ===== HEALTH CHECK (Standalone) =====
+// ============================================================
+// HEALTH CHECK
+// ============================================================
 async function runHealthCheck() {
     healthStatus.innerHTML = '<div class="health-loading"><i class="fas fa-spinner fa-spin"></i> Memeriksa...</div>';
 
     const checks = [];
 
-    // 1. Koneksi internet
     const isOnline = navigator.onLine;
     checks.push({
         label: 'Koneksi Internet',
@@ -194,7 +240,6 @@ async function runHealthCheck() {
         detail: isOnline ? 'Online' : 'Offline'
     });
 
-    // 2. Cek file penting (relatif terhadap root)
     const criticalFiles = ['style.css', 'script.js', 'loader.js'];
     for (const file of criticalFiles) {
         try {
@@ -209,7 +254,6 @@ async function runHealthCheck() {
         }
     }
 
-    // 3. Memory (jika tersedia)
     if (performance.memory) {
         const used = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
         const total = (performance.memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2);
@@ -254,13 +298,13 @@ function renderHealth(checks) {
     `;
 }
 
-// ===== PERFORMANCE (Standalone) =====
+// ============================================================
+// PERFORMANCE
+// ============================================================
 function updatePerformance() {
-    // Load time
     const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
     loadTimeEl.textContent = loadTime > 0 && loadTime < 30000 ? `${loadTime}ms` : 'N/A';
 
-    // Render time (dari window jika tersedia)
     if (window.renderEndTime && window.renderStartTime) {
         const renderTime = window.renderEndTime - window.renderStartTime;
         renderTimeEl.textContent = renderTime > 0 ? `${renderTime.toFixed(2)}ms` : 'N/A';
@@ -268,7 +312,6 @@ function updatePerformance() {
         renderTimeEl.textContent = 'N/A';
     }
 
-    // Memory
     if (performance.memory) {
         const used = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
         memoryUsageEl.textContent = `${used} MB`;
@@ -276,12 +319,13 @@ function updatePerformance() {
         memoryUsageEl.textContent = 'N/A';
     }
 
-    // File check status
     const online = fileStatus.filter(f => f.status === 'online').length;
     fileCheckStatusEl.textContent = `${online}/${JS_FILES.length} online`;
 }
 
-// ===== CONSOLE SHORTCUTS =====
+// ============================================================
+// CONSOLE SHORTCUTS
+// ============================================================
 window.report = function() {
     console.log('📊 ===== LAPORAN MONITORING =====');
     console.log(`📁 Total File JS: ${JS_FILES.length}`);
@@ -317,17 +361,26 @@ window.debugOff = function() {
     addLog('info', '🔍 Debug mode nonaktif');
 };
 
-// ===== NAVIGASI SIDEBAR =====
+// ============================================================
+// NAVIGASI SIDEBAR
+// ============================================================
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
         this.classList.add('active');
         addLog('info', `📂 Navigasi ke ${this.textContent.trim()}`);
+
+        // Tutup sidebar di mobile setelah klik
+        if (window.innerWidth <= 992) {
+            sidebar.classList.remove('mobile-open');
+        }
     });
 });
 
-// ===== BUTTON EVENTS =====
+// ============================================================
+// BUTTON EVENTS
+// ============================================================
 document.getElementById('refreshAll').addEventListener('click', async () => {
     addLog('info', '🔄 Refresh semua data...');
     await checkFileStatus();
@@ -353,7 +406,9 @@ document.getElementById('clearLogs').addEventListener('click', () => {
     clearLogs();
 });
 
-// ===== ERROR HANDLER =====
+// ============================================================
+// ERROR HANDLER
+// ============================================================
 window.onerror = function(message, source, lineno, colno, error) {
     addLog('error', `${message} (${source}:${lineno})`);
     return true;
@@ -363,9 +418,12 @@ window.addEventListener('unhandledrejection', function(event) {
     addLog('error', `Promise rejected: ${event.reason}`);
 });
 
-// ===== INIT =====
+// ============================================================
+// INIT
+// ============================================================
 async function initMonitor() {
     addLog('info', '🚀 Monitor Loker Kendari dimulai');
+    addLog('info', '📌 Klik ikon ☰ di kiri atas untuk toggle sidebar');
     await checkFileStatus();
     await runHealthCheck();
     updatePerformance();
@@ -373,12 +431,14 @@ async function initMonitor() {
 
     console.log('💡 Dashboard Monitor siap!');
     console.log('📌 Gunakan: report(), getLogs(), clearLogs(), debugOn(), debugOff()');
+    console.log('📌 Klik ikon ☰ di kiri atas untuk toggle sidebar');
 }
 
-// Jalankan
 initMonitor();
 
-// ===== AUTO REFRESH =====
+// ============================================================
+// AUTO REFRESH
+// ============================================================
 setInterval(async () => {
     await checkFileStatus();
     updatePerformance();
