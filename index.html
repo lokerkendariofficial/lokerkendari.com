@@ -16,9 +16,13 @@
     <!-- Semua komponen akan dimuat di sini oleh loader.js -->
     <div id="app"></div>
 
-    <!-- Loader.js memuat komponen HTML terlebih dahulu -->
+    <!-- 1. Loader: memuat komponen HTML dari folder components/ -->
     <script src="loader.js"></script>
-    <!-- Setelah komponen dimuat, baru script.js dijalankan -->
+
+    <!-- 2. Error Handler: mendeteksi dan melaporkan error (development) -->
+    <script src="error-handler.js"></script>
+
+    <!-- 3. Script utama: logika interaktif (ES Module) -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
