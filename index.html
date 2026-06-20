@@ -10,8 +10,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
+
     <!-- ===== HEADER / NAVBAR ===== -->
     <header class="navbar">
         <div class="container nav-container">
@@ -61,19 +64,19 @@
     <section class="stats">
         <div class="container stats-grid">
             <div class="stat-item">
-                <span class="stat-number" data-count="50">0</span>
+                <span class="stat-number" data-count="12">0</span>
                 <span class="stat-label">Total Lowongan</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number" data-count="15">0</span>
+                <span class="stat-number" data-count="10">0</span>
                 <span class="stat-label">Perusahaan Aktif</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number" data-count="8">0</span>
+                <span class="stat-number" data-count="6">0</span>
                 <span class="stat-label">Kategori Pekerjaan</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number" data-count="1200">0</span>
+                <span class="stat-number" data-count="250">0</span>
                 <span class="stat-label">Pelamar Terdaftar</span>
             </div>
         </div>
@@ -195,19 +198,6 @@
         </div>
     </div>
 
-    <!-- ===== LAMAR MODAL ===== -->
-    <div class="modal-overlay" id="applyModal">
-        <div class="modal-box">
-            <button class="modal-close" id="modalClose">&times;</button>
-            <h3>Konfirmasi Lamaran</h3>
-            <p>Anda akan melamar <strong id="modalPosition">Frontend Developer</strong> di <strong id="modalCompany">PT Teknologi</strong>.</p>
-            <div class="modal-actions">
-                <button class="btn btn-primary" id="modalConfirm">Ya, Lamar</button>
-                <button class="btn btn-outline" id="modalCancel">Batal</button>
-            </div>
-        </div>
-    </div>
-
     <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="container footer-container">
@@ -234,8 +224,6 @@
         </div>
     </footer>
 
-    <!-- Font Awesome untuk ikon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <script src="script.js"></script>
 </body>
 </html>
