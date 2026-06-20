@@ -23,7 +23,7 @@ export function formatDate(dateString) {
 
 // Render job cards
 export function renderJobs(jobs) {
-    if (jobs.length === 0) {
+    if (!jobs || jobs.length === 0) {
         jobsGrid.innerHTML = '';
         emptyState.style.display = 'block';
         return;
@@ -108,7 +108,6 @@ export function applyJob(id) {
         alert(`✅ Anda telah melamar posisi "${job.title}" di ${job.company}.\n\nTim rekrutmen akan menghubungi Anda segera.`);
     }
 }
-// Expose ke global untuk onclick
 window.applyJob = applyJob;
 
 // ===== ANIMASI STATS =====
@@ -131,22 +130,25 @@ export function animateStats() {
 
 // ===== LOAD DATA =====
 export function loadJobs() {
-    loadingIndicator.classList.add('active');
-    jobsGrid.innerHTML = '';
+    if (loadingIndicator) loadingIndicator.classList.add('active');
+    if (jobsGrid) jobsGrid.innerHTML = '';
 
+    // Gunakan data dari defaultJobs
     jobsData = defaultJobs;
 
-    loadingIndicator.classList.remove('active');
+    if (loadingIndicator) loadingIndicator.classList.remove('active');
     filterAndSortJobs();
     animateStats();
 }
 
 // ===== EVENT LISTENERS UNTUK FILTER =====
 export function initMainEvents() {
-    searchBtn.addEventListener('click', filterAndSortJobs);
-    searchInput.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') filterAndSortJobs();
-    });
-    categoryFilter.addEventListener('change', filterAndSortJobs);
-    sortFilter.addEventListener('change', filterAndSortJobs);
+    if (searchBtn) searchBtn.addEventListener('click', filterAndSortJobs);
+    if (searchInput) {
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') filterAndSortJobs();
+        });
+    }
+    if (categoryFilter) categoryFilter.addEventListener('change', filterAndSortJobs);
+    if (sortFilter) sortFilter.addEventListener('change', filterAndSortJobs);
 }
