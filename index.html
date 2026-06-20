@@ -3,86 +3,182 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Loker Kendari</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <title>Loker Kendari - Info Lowongan Kerja Kendari Terbaru</title>
+    <meta name="description" content="Info lowongan kerja terbaru di Kendari, Sulawesi Tenggara." />
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>" />
 </head>
 <body>
-
-    <!-- NAVBAR -->
-    <nav class="navbar">
+    <!-- ===== HEADER / NAVBAR ===== -->
+    <header class="navbar">
         <div class="container nav-container">
-            <a href="#" class="logo"><i class="fas fa-briefcase"></i> Loker<span>Kendari</span></a>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#" id="navInbox" class="nav-link">Inbox</a></li>
-                <li><a href="#" id="navExplore" class="nav-link">Explore</a></li>
-                <li><a href="#" id="navCopilot" class="nav-link">Copilot</a></li>
-            </ul>
-            <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+            <a href="#" class="logo">
+                <span class="logo-icon">💼</span>
+                <span class="logo-text">Loker<span class="highlight">Kendari</span></span>
+            </a>
+            <nav class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#" id="navInbox" class="nav-link">Inbox</a>
+                <a href="#" id="navExplore" class="nav-link">Explore</a>
+                <a href="#" id="navCopilot" class="nav-link">Copilot</a>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
         </div>
-    </nav>
+    </header>
 
-    <!-- HERO -->
+    <!-- ===== HERO SECTION ===== -->
     <section class="hero" id="home">
         <div class="container hero-container">
-            <div>
-                <h1>Temukan Karier <span class="highlight">Impianmu</span> di Kendari</h1>
-                <p>Portal lowongan kerja terpercaya untuk Kendari dan sekitarnya.</p>
-                <a href="#jobs" class="btn btn-primary">Lihat Lowongan</a>
+            <div class="hero-content">
+                <span class="hero-badge">🔥 Lowongan Terbaru</span>
+                <h1 class="hero-title">
+                    Temukan Pekerjaan <br />
+                    <span class="highlight">Impianmu</span> di Kendari
+                </h1>
+                <p class="hero-desc">
+                    Portal informasi lowongan kerja terpercaya untuk wilayah Kendari
+                    dan sekitarnya. Update setiap hari dari berbagai perusahaan ternama.
+                </p>
+                <div class="hero-actions">
+                    <a href="#jobs" class="btn btn-primary">Lihat Lowongan</a>
+                    <a href="#about" class="btn btn-outline">Pelajari Lebih</a>
+                </div>
             </div>
-            <div class="hero-emoji">🏢</div>
+            <div class="hero-visual">
+                <div class="hero-emoji">🏢</div>
+                <div class="floating-badge badge-1">✨ 10+ Perusahaan</div>
+                <div class="floating-badge badge-2">📈 50+ Lowongan</div>
+            </div>
         </div>
     </section>
 
-    <!-- STATS -->
+    <!-- ===== STATS BANNER ===== -->
     <section class="stats">
         <div class="container stats-grid">
-            <div><span class="stat-number" data-count="50">0</span><span class="stat-label">Lowongan</span></div>
-            <div><span class="stat-number" data-count="15">0</span><span class="stat-label">Perusahaan</span></div>
-            <div><span class="stat-number" data-count="8">0</span><span class="stat-label">Kategori</span></div>
-            <div><span class="stat-number" data-count="1200">0</span><span class="stat-label">Pelamar</span></div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="50">0</span>
+                <span class="stat-label">Total Lowongan</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="15">0</span>
+                <span class="stat-label">Perusahaan Aktif</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="8">0</span>
+                <span class="stat-label">Kategori Pekerjaan</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="1200">0</span>
+                <span class="stat-label">Pelamar Terdaftar</span>
+            </div>
         </div>
     </section>
 
-    <!-- FILTER & JOBS -->
+    <!-- ===== FILTER & SEARCH ===== -->
     <section class="filter-section" id="jobs">
         <div class="container">
-            <h2 class="section-title"><i class="fas fa-list-ul"></i> Daftar Lowongan</h2>
+            <div class="filter-header">
+                <h2 class="section-title">📋 Daftar Lowongan Kerja</h2>
+                <p class="section-subtitle">Temukan lowongan yang sesuai dengan kualifikasi dan minatmu.</p>
+            </div>
             <div class="filter-bar">
                 <div class="search-wrapper">
-                    <input type="text" id="searchInput" placeholder="Cari lowongan..." />
-                    <button id="searchBtn" class="btn btn-search"><i class="fas fa-search"></i> Cari</button>
+                    <input type="text" id="searchInput" placeholder="Cari lowongan, perusahaan, atau lokasi..." />
+                    <button id="searchBtn" class="btn btn-search">🔍 Cari</button>
                 </div>
-                <div>
+                <div class="filter-options">
                     <select id="categoryFilter">
                         <option value="all">Semua Kategori</option>
-                        <option value="Teknologi & IT">Teknologi & IT</option>
+                        <option value="Administrasi">Administrasi</option>
                         <option value="Marketing & Sales">Marketing & Sales</option>
-                        <option value="Keuangan & Perbankan">Keuangan</option>
+                        <option value="Teknologi & IT">Teknologi & IT</option>
+                        <option value="Keuangan & Perbankan">Keuangan & Perbankan</option>
                         <option value="Pendidikan">Pendidikan</option>
                         <option value="Kesehatan">Kesehatan</option>
+                        <option value="Teknik & Konstruksi">Teknik & Konstruksi</option>
+                        <option value="Logistik & Transportasi">Logistik & Transportasi</option>
                     </select>
                     <select id="sortFilter">
                         <option value="terbaru">Terbaru</option>
+                        <option value="terlama">Terlama</option>
                         <option value="gaji-tertinggi">Gaji Tertinggi</option>
                         <option value="gaji-terendah">Gaji Terendah</option>
                     </select>
                 </div>
             </div>
-            <div class="jobs-grid" id="jobsGrid"></div>
-            <div class="jobs-empty" id="emptyState" style="display:none;">Tidak ada lowongan ditemukan.</div>
         </div>
     </section>
 
-    <!-- INBOX POPUP -->
+    <!-- ===== JOB LISTINGS ===== -->
+    <section class="jobs-section">
+        <div class="container">
+            <div class="jobs-grid" id="jobsGrid"></div>
+            <div class="jobs-loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                <p>Memuat lowongan...</p>
+            </div>
+            <div class="jobs-empty" id="emptyState" style="display:none;">
+                <div class="empty-icon">🔍</div>
+                <h3>Tidak ada lowongan ditemukan</h3>
+                <p>Coba ubah kata kunci atau filter pencarian.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ABOUT SECTION ===== -->
+    <section class="about-section" id="about">
+        <div class="container about-container">
+            <div class="about-content">
+                <h2 class="section-title">Tentang <span class="highlight">Loker Kendari</span></h2>
+                <p>
+                    Loker Kendari adalah portal informasi lowongan kerja yang didedikasikan
+                    untuk masyarakat Kendari dan Sulawesi Tenggara. Kami mengumpulkan dan
+                    menyajikan informasi lowongan kerja dari berbagai sumber terpercaya
+                    secara transparan dan gratis.
+                </p>
+                <div class="about-features">
+                    <div class="about-feature">
+                        <span>✅</span>
+                        <div>
+                            <h4>Terpercaya</h4>
+                            <p>Sumber informasi dari perusahaan dan instansi resmi.</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <span>🔄</span>
+                        <div>
+                            <h4>Update Real-time</h4>
+                            <p>Lowongan diperbarui secara berkala setiap hari.</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <span>💰</span>
+                        <div>
+                            <h4>Gratis</h4>
+                            <p>Semua informasi dapat diakses tanpa biaya apapun.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-illustration">
+                <div class="about-emoji">📢</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== INBOX POPUP ===== -->
     <div class="inbox-popup" id="inboxPopup">
         <i class="fas fa-envelope-open-text"></i>
         <span>Anda memiliki 3 pesan baru</span>
         <button id="closeInbox">&times;</button>
     </div>
 
-    <!-- EXPLORE MODAL -->
+    <!-- ===== EXPLORE MODAL ===== -->
     <div class="modal-overlay" id="exploreModal">
         <div class="modal-box">
             <button class="modal-close" id="closeExplore">&times;</button>
@@ -94,11 +190,12 @@
                 <span>💰 Keuangan</span>
                 <span>📚 Pendidikan</span>
                 <span>🏥 Kesehatan</span>
+                <span>⚙️ Teknik</span>
             </div>
         </div>
     </div>
 
-    <!-- LAMAR MODAL -->
+    <!-- ===== LAMAR MODAL ===== -->
     <div class="modal-overlay" id="applyModal">
         <div class="modal-box">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -111,6 +208,34 @@
         </div>
     </div>
 
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <span class="logo-text">Loker<span class="highlight">Kendari</span></span>
+                <p>Info lowongan kerja terpercaya untuk Kendari dan sekitarnya.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Menu</h4>
+                <a href="#home">Home</a>
+                <a href="#jobs">Lowongan</a>
+                <a href="#about">Tentang</a>
+            </div>
+            <div class="footer-contact">
+                <h4>Kontak</h4>
+                <p>📧 info@lokerkendari.com</p>
+                <p>📱 +62 823-1490-5599</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 Loker Kendari. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <script src="script.js"></script>
 </body>
 </html>
