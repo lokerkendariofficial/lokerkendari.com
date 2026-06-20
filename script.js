@@ -9,7 +9,39 @@ function initApp() {
     initMainEvents();
     initInbox();
     initExplore();
-    // ... sisanya sama
+
+    // Copilot
+    const navCopilot = document.getElementById('navCopilot');
+    if (navCopilot) {
+        navCopilot.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            alert('🤖 Copilot: Siap membantu Anda menemukan lowongan terbaik di Kendari! Silakan tanyakan apa saja.');
+        });
+    }
+
+    // Home active state
+    document.querySelector('.nav-link[href="#home"]')?.addEventListener('click', function() {
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+    });
+
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('open');
+            });
+        });
+    }
+
+    console.log('✅ Loker Kendari siap!');
 }
 
 // === Cek apakah komponen sudah dimuat ===
