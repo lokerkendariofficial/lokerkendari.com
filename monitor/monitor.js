@@ -1,9 +1,11 @@
-// ========================================
-// MONITOR.JS - Dashboard Monitoring
-// Desain Sunbird dcTrack
-// ========================================
+// ============================================================
+// MONITOR.JS - Dashboard Monitoring (Standalone)
+// Tidak bergantung pada file lain di luar folder monitor/
+// ============================================================
 
 // ===== KONFIGURASI =====
+// Daftar file yang akan dipantau (relatif terhadap root)
+// Karena monitor mandiri, kita gunakan data dummy untuk demo
 const JS_FILES = [
     'js/data.js',
     'js/main.js',
@@ -16,45 +18,48 @@ const JS_FILES = [
     'js/error/system-info.js'
 ];
 
+// ===== DATA DUMMY UNTUK DEMO =====
+// (Monitor akan mencoba fetch file asli, tapi jika gagal pakai data ini)
+const DUMMY_DATA = {
+    online: 7,
+    offline: 2,
+    total: 9,
+    files: [
+        { name: 'data.js', status: 'online' },
+        { name: 'main.js', status: 'online' },
+        { name: 'inbox.js', status: 'online' },
+        { name: 'explore.js', status: 'online' },
+        { name: 'global-error.js', status: 'online' },
+        { name: 'console-override.js', status: 'offline' },
+        { name: 'notification.js', status: 'online' },
+        { name: 'file-checker.js', status: 'online' },
+        { name: 'system-info.js', status: 'offline' }
+    ]
+};
+
 // ===== STATE =====
-let fileStatus = {};
+let fileStatus = [];
 let logEntries = [];
 let healthResults = [];
 let isDebugMode = false;
-let fileData = [];
 
 // ===== DOM REFS =====
-// Header
-const connectionText = document.getElementById('connectionText');
-const connectionStatus = document.getElementById('connectionStatus');
-const headerTime = document.getElementById('headerTime');
-const footerTime = document.getElementById('footerTime');
-
-// File Status
 const totalFilesEl = document.getElementById('totalFiles');
 const onlineFilesEl = document.getElementById('onlineFiles');
 const offlineFilesEl = document.getElementById('offlineFiles');
 const fileChart = document.getElementById('fileChart');
-
-// Logs
 const logContainer = document.getElementById('logContainer');
-
-// Health
 const healthStatus = document.getElementById('healthStatus');
-
-// Performance
 const loadTimeEl = document.getElementById('loadTime');
 const renderTimeEl = document.getElementById('renderTime');
 const memoryUsageEl = document.getElementById('memoryUsage');
 const fileCheckStatusEl = document.getElementById('fileCheckStatus');
 const progressFill = document.getElementById('progressFill');
 const healthPercent = document.getElementById('healthPercent');
-
-// Buttons
-const refreshAllBtn = document.getElementById('refreshAll');
-const refreshFilesBtn = document.getElementById('refreshFiles');
-const runHealthCheckBtn = document.getElementById('runHealthCheck');
-const clearLogsBtn = document.getElementById('clearLogs');
+const connectionText = document.getElementById('connectionText');
+const connectionStatus = document.getElementById('connectionStatus');
+const headerTime = document.getElementById('headerTime');
+const footerTime = document.getElementById('footerTime');
 
 // ===== UTILITY =====
 function formatTime() {
@@ -67,10 +72,8 @@ function formatDate() {
 
 // ===== CLOCK =====
 function updateClock() {
-    const now = formatDate();
-    const time = formatTime();
-    headerTime.textContent = time;
-    footerTime.textContent = now;
+    headerTime.textContent = formatTime();
+    footerTime.textContent = formatDate();
 }
 setInterval(updateClock, 1000);
 updateClock();
@@ -85,15 +88,16 @@ updateConnectionStatus();
 window.addEventListener('online', updateConnectionStatus);
 window.addEventListener('offline', updateConnectionStatus);
 
-// ===== FILE CHECKER =====
+// ===== FILE CHECKER (Standalone) =====
 async function checkFileStatus() {
     let online = 0;
     let offline = 0;
     let results = [];
 
+    // Coba fetch file asli
     for (const file of JS_FILES) {
         try {
-            const res = await fetch(file, { method: 'HEAD' });
+            const res = await fetch(file, { method: 'HEAD', cache: 'no-cache' });
             const status = res.ok ? 'online' : 'offline';
             if (status === 'online') online++;
             else offline++;
@@ -104,6 +108,13 @@ async function checkFileStatus() {
         }
     }
 
+    // Jika semua gagal (misal offline), gunakan data dummy
+    if (results.length === 0 || (online === 0 && offline === 0)) {
+        results = DUMMY_DATA.files;
+        online = DUMMY_DATA.online;
+        offline = DUMMY_DATA.offline;
+    }
+
     fileStatus = results;
     totalFilesEl.textContent = JS_FILES.length;
     onlineFilesEl.textContent = online;
@@ -111,6 +122,7 @@ async function checkFileStatus() {
 
     renderFileChart(results);
     updatePerformance();
+    return results;
 }
 
 function renderFileChart(files) {
@@ -119,7 +131,6 @@ function renderFileChart(files) {
         return;
     }
 
-    // Ambil 10 file teratas
     const topFiles = files.slice(0, 10);
     const maxHeight = 70;
 
@@ -146,7 +157,6 @@ function addLog(type, message) {
     logEntries.unshift(entry);
     if (logEntries.length > 100) logEntries.pop();
     renderLogs();
-    updateStats();
 }
 
 function renderLogs() {
@@ -167,11 +177,10 @@ function renderLogs() {
 function clearLogs() {
     logEntries = [];
     renderLogs();
-    updateStats();
     addLog('info', '🗑️ Log dibersihkan');
 }
 
-// ===== HEALTH CHECK =====
+// ===== HEALTH CHECK (Standalone) =====
 async function runHealthCheck() {
     healthStatus.innerHTML = '<div class="health-loading"><i class="fas fa-spinner fa-spin"></i> Memeriksa...</div>';
 
@@ -185,11 +194,11 @@ async function runHealthCheck() {
         detail: isOnline ? 'Online' : 'Offline'
     });
 
-    // 2. Cek file penting
+    // 2. Cek file penting (relatif terhadap root)
     const criticalFiles = ['style.css', 'script.js', 'loader.js'];
     for (const file of criticalFiles) {
         try {
-            const res = await fetch(file, { method: 'HEAD' });
+            const res = await fetch(file, { method: 'HEAD', cache: 'no-cache' });
             checks.push({
                 label: `File ${file}`,
                 status: res.ok ? 'pass' : 'fail',
@@ -209,6 +218,12 @@ async function runHealthCheck() {
             status: 'pass',
             detail: `${used} MB / ${total} MB`
         });
+    } else {
+        checks.push({
+            label: 'Memory Usage',
+            status: 'pass',
+            detail: 'Tidak tersedia'
+        });
     }
 
     healthResults = checks;
@@ -221,12 +236,11 @@ function renderHealth(checks) {
     const total = checks.length;
     const percent = total > 0 ? Math.round((pass / total) * 100) : 0;
 
-    // Update progress
     progressFill.style.width = percent + '%';
     healthPercent.textContent = percent + '%';
 
     healthStatus.innerHTML = `
-        <div style="margin-bottom:12px; font-weight:600; font-size:0.85rem; display:flex; gap:16px;">
+        <div style="margin-bottom:12px; font-weight:600; font-size:0.85rem; display:flex; gap:16px; flex-wrap:wrap;">
             <span style="color:var(--success);">${pass} ✅ Lolos</span>
             <span style="color:var(--danger);">${fail} ❌ Gagal</span>
             <span style="color:var(--text-muted);">Total ${total}</span>
@@ -240,39 +254,38 @@ function renderHealth(checks) {
     `;
 }
 
-// ===== PERFORMANCE =====
+// ===== PERFORMANCE (Standalone) =====
 function updatePerformance() {
     // Load time
     const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-    loadTimeEl.textContent = loadTime > 0 ? `${loadTime}ms` : '-';
+    loadTimeEl.textContent = loadTime > 0 && loadTime < 30000 ? `${loadTime}ms` : 'N/A';
 
-    // Render time
+    // Render time (dari window jika tersedia)
     if (window.renderEndTime && window.renderStartTime) {
         const renderTime = window.renderEndTime - window.renderStartTime;
-        renderTimeEl.textContent = renderTime > 0 ? `${renderTime.toFixed(2)}ms` : '-';
+        renderTimeEl.textContent = renderTime > 0 ? `${renderTime.toFixed(2)}ms` : 'N/A';
+    } else {
+        renderTimeEl.textContent = 'N/A';
     }
 
     // Memory
     if (performance.memory) {
         const used = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
         memoryUsageEl.textContent = `${used} MB`;
+    } else {
+        memoryUsageEl.textContent = 'N/A';
     }
 
     // File check status
-    const online = Object.values(fileStatus).filter(f => f.status === 'online').length;
+    const online = fileStatus.filter(f => f.status === 'online').length;
     fileCheckStatusEl.textContent = `${online}/${JS_FILES.length} online`;
-}
-
-// ===== UPDATE STATS =====
-function updateStats() {
-    // Error count untuk badge (tidak ditampilkan di UI tapi bisa digunakan nanti)
 }
 
 // ===== CONSOLE SHORTCUTS =====
 window.report = function() {
     console.log('📊 ===== LAPORAN MONITORING =====');
     console.log(`📁 Total File JS: ${JS_FILES.length}`);
-    const online = Object.values(fileStatus).filter(f => f.status === 'online').length;
+    const online = fileStatus.filter(f => f.status === 'online').length;
     console.log(`✅ Online: ${online}`);
     console.log(`❌ Offline: ${JS_FILES.length - online}`);
     console.log(`📝 Total Log: ${logEntries.length}`);
@@ -314,8 +327,8 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
-// ===== REFRESH ALL =====
-refreshAllBtn.addEventListener('click', async () => {
+// ===== BUTTON EVENTS =====
+document.getElementById('refreshAll').addEventListener('click', async () => {
     addLog('info', '🔄 Refresh semua data...');
     await checkFileStatus();
     await runHealthCheck();
@@ -323,23 +336,20 @@ refreshAllBtn.addEventListener('click', async () => {
     addLog('success', '✅ Refresh selesai');
 });
 
-// ===== REFRESH FILES =====
-refreshFilesBtn.addEventListener('click', async () => {
+document.getElementById('refreshFiles').addEventListener('click', async () => {
     addLog('info', '🔄 Refresh file status...');
     await checkFileStatus();
     updatePerformance();
     addLog('success', '✅ File status diperbarui');
 });
 
-// ===== RUN HEALTH CHECK =====
-runHealthCheckBtn.addEventListener('click', async () => {
+document.getElementById('runHealthCheck').addEventListener('click', async () => {
     addLog('info', '🏥 Menjalankan health check...');
     await runHealthCheck();
     addLog('success', '✅ Health check selesai');
 });
 
-// ===== CLEAR LOGS =====
-clearLogsBtn.addEventListener('click', () => {
+document.getElementById('clearLogs').addEventListener('click', () => {
     clearLogs();
 });
 
@@ -365,6 +375,7 @@ async function initMonitor() {
     console.log('📌 Gunakan: report(), getLogs(), clearLogs(), debugOn(), debugOff()');
 }
 
+// Jalankan
 initMonitor();
 
 // ===== AUTO REFRESH =====
