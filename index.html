@@ -1,1 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loker Kendari</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo"><i class="fas fa-briefcase"></i> Loker<span>Kendari</span></a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#" id="navInbox" class="nav-link">Inbox</a></li>
+                <li><a href="#" id="navExplore" class="nav-link">Explore</a></li>
+                <li><a href="#" id="navCopilot" class="nav-link">Copilot</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="container hero-container">
+            <div>
+                <h1>Temukan Karier <span class="highlight">Impianmu</span> di Kendari</h1>
+                <p>Portal lowongan kerja terpercaya untuk Kendari dan sekitarnya.</p>
+                <a href="#jobs" class="btn btn-primary">Lihat Lowongan</a>
+            </div>
+            <div class="hero-emoji">🏢</div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats">
+        <div class="container stats-grid">
+            <div><span class="stat-number" data-count="50">0</span><span class="stat-label">Lowongan</span></div>
+            <div><span class="stat-number" data-count="15">0</span><span class="stat-label">Perusahaan</span></div>
+            <div><span class="stat-number" data-count="8">0</span><span class="stat-label">Kategori</span></div>
+            <div><span class="stat-number" data-count="1200">0</span><span class="stat-label">Pelamar</span></div>
+        </div>
+    </section>
+
+    <!-- FILTER & JOBS -->
+    <section class="filter-section" id="jobs">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-list-ul"></i> Daftar Lowongan</h2>
+            <div class="filter-bar">
+                <div class="search-wrapper">
+                    <input type="text" id="searchInput" placeholder="Cari lowongan..." />
+                    <button id="searchBtn" class="btn btn-search"><i class="fas fa-search"></i> Cari</button>
+                </div>
+                <div>
+                    <select id="categoryFilter">
+                        <option value="all">Semua Kategori</option>
+                        <option value="Teknologi & IT">Teknologi & IT</option>
+                        <option value="Marketing & Sales">Marketing & Sales</option>
+                        <option value="Keuangan & Perbankan">Keuangan</option>
+                        <option value="Pendidikan">Pendidikan</option>
+                        <option value="Kesehatan">Kesehatan</option>
+                    </select>
+                    <select id="sortFilter">
+                        <option value="terbaru">Terbaru</option>
+                        <option value="gaji-tertinggi">Gaji Tertinggi</option>
+                        <option value="gaji-terendah">Gaji Terendah</option>
+                    </select>
+                </div>
+            </div>
+            <div class="jobs-grid" id="jobsGrid"></div>
+            <div class="jobs-empty" id="emptyState" style="display:none;">Tidak ada lowongan ditemukan.</div>
+        </div>
+    </section>
+
+    <!-- INBOX POPUP -->
+    <div class="inbox-popup" id="inboxPopup">
+        <i class="fas fa-envelope-open-text"></i>
+        <span>Anda memiliki 3 pesan baru</span>
+        <button id="closeInbox">&times;</button>
+    </div>
+
+    <!-- EXPLORE MODAL -->
+    <div class="modal-overlay" id="exploreModal">
+        <div class="modal-box">
+            <button class="modal-close" id="closeExplore">&times;</button>
+            <h3><i class="fas fa-compass"></i> Explore Lowongan</h3>
+            <p>Jelajahi berbagai kategori pekerjaan di Kendari.</p>
+            <div class="explore-tags">
+                <span>💻 Teknologi</span>
+                <span>📊 Marketing</span>
+                <span>💰 Keuangan</span>
+                <span>📚 Pendidikan</span>
+                <span>🏥 Kesehatan</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- LAMAR MODAL -->
+    <div class="modal-overlay" id="applyModal">
+        <div class="modal-box">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h3>Konfirmasi Lamaran</h3>
+            <p>Anda akan melamar <strong id="modalPosition">Frontend Developer</strong> di <strong id="modalCompany">PT Teknologi</strong>.</p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="modalConfirm">Ya, Lamar</button>
+                <button class="btn btn-outline" id="modalCancel">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
