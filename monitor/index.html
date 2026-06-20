@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitor - Loker Kendari</title>
+    <link rel="stylesheet" href="monitor.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+    <div class="monitor-container">
+        <!-- Header -->
+        <header class="monitor-header">
+            <div class="header-left">
+                <i class="fas fa-heartbeat"></i>
+                <h1>Loker Kendari <span>Monitor</span></h1>
+            </div>
+            <div class="header-right">
+                <span class="status-badge" id="connectionStatus">
+                    <i class="fas fa-wifi"></i> <span id="connectionText">Online</span>
+                </span>
+                <span class="status-badge">
+                    <i class="fas fa-clock"></i> <span id="updateTime">-</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <section class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-file-code"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="totalFiles">0</span>
+                    <span class="stat-label">Total File JS</span>
+                </div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="onlineFiles">0</span>
+                    <span class="stat-label">File Online</span>
+                </div>
+            </div>
+            <div class="stat-card danger">
+                <div class="stat-icon"><i class="fas fa-exclamation-circle"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="offlineFiles">0</span>
+                    <span class="stat-label">File Offline</span>
+                </div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon"><i class="fas fa-bug"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="errorCount">0</span>
+                    <span class="stat-label">Total Error</span>
+                </div>
+            </div>
+            <div class="stat-card info">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="activityCount">0</span>
+                    <span class="stat-label">Aktivitas User</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Grid -->
+        <div class="monitor-grid">
+            <!-- File Status -->
+            <section class="panel panel-files">
+                <div class="panel-header">
+                    <h2><i class="fas fa-folder-open"></i> Status File JS</h2>
+                    <button id="refreshFiles" class="btn-refresh">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                <div class="panel-body" id="fileList">
+                    <div class="loading-text"><i class="fas fa-spinner fa-spin"></i> Memuat file...</div>
+                </div>
+            </section>
+
+            <!-- Log Aktivitas -->
+            <section class="panel panel-logs">
+                <div class="panel-header">
+                    <h2><i class="fas fa-list-ul"></i> Log Aktivitas</h2>
+                    <button id="clearLogs" class="btn-clear">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+                <div class="panel-body log-container" id="logContainer">
+                    <div class="empty-log">Belum ada aktivitas</div>
+                </div>
+            </section>
+
+            <!-- Health Check -->
+            <section class="panel panel-health">
+                <div class="panel-header">
+                    <h2><i class="fas fa-heartbeat"></i> Health Check</h2>
+                    <button id="runHealthCheck" class="btn-refresh">
+                        <i class="fas fa-sync-alt"></i> Check
+                    </button>
+                </div>
+                <div class="panel-body" id="healthStatus">
+                    <div class="loading-text">Menjalankan health check...</div>
+                </div>
+            </section>
+
+            <!-- Performance -->
+            <section class="panel panel-performance">
+                <div class="panel-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Performa</h2>
+                </div>
+                <div class="panel-body" id="performanceData">
+                    <div class="perf-item">
+                        <span class="perf-label">Load Time</span>
+                        <span class="perf-value" id="loadTime">-</span>
+                    </div>
+                    <div class="perf-item">
+                        <span class="perf-label">Render Time</span>
+                        <span class="perf-value" id="renderTime">-</span>
+                    </div>
+                    <div class="perf-item">
+                        <span class="perf-label">Memory Usage</span>
+                        <span class="perf-value" id="memoryUsage">-</span>
+                    </div>
+                    <div class="perf-item">
+                        <span class="perf-label">File Check</span>
+                        <span class="perf-value" id="fileCheckStatus">-</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shortcut Commands -->
+            <section class="panel panel-shortcuts">
+                <div class="panel-header">
+                    <h2><i class="fas fa-terminal"></i> Shortcut Console</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="shortcut-list">
+                        <div class="shortcut-item">
+                            <code>report()</code>
+                            <span>Lihat laporan lengkap</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <code>getLogs()</code>
+                            <span>Lihat semua log</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <code>clearLogs()</code>
+                            <span>Hapus semua log</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <code>debugOn()</code>
+                            <span>Aktifkan debug mode</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <code>debugOff()</code>
+                            <span>Nonaktifkan debug mode</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="monitor-footer">
+            <p>Loker Kendari Monitor v1.0 &bull; <span id="liveTime">-</span></p>
+        </footer>
+    </div>
+
+    <script src="monitor.js"></script>
+</body>
+</html>
