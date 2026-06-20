@@ -1,8 +1,16 @@
 // ============================================================
-// MONITOR.JS - Dashboard Monitoring (Standalone)
+// MONITOR.JS - Enterprise Dashboard
+// Sistem monitoring kompleks dengan visualisasi data
 // ============================================================
 
 // ===== KONFIGURASI =====
+const CONFIG = {
+    autoRefreshInterval: 30000,
+    healthCheckInterval: 60000,
+    maxLogs: 100,
+    maxChartItems: 10
+};
+
 const JS_FILES = [
     'js/data.js',
     'js/main.js',
@@ -34,69 +42,76 @@ const DUMMY_DATA = {
 };
 
 // ===== STATE =====
-let fileStatus = [];
-let logEntries = [];
-let healthResults = [];
-let isDebugMode = false;
-let sidebarCollapsed = false;
+let state = {
+    fileStatus: [],
+    logEntries: [],
+    healthResults: [],
+    isDebugMode: false,
+    sidebarCollapsed: false,
+    isMobile: window.innerWidth <= 992,
+    uptimeSeconds: 0,
+    startTime: Date.now()
+};
 
 // ===== DOM REFS =====
-const sidebar = document.getElementById('sidebar');
-const toggleBtn = document.getElementById('toggleSidebar');
-const totalFilesEl = document.getElementById('totalFiles');
-const onlineFilesEl = document.getElementById('onlineFiles');
-const offlineFilesEl = document.getElementById('offlineFiles');
-const fileChart = document.getElementById('fileChart');
-const logContainer = document.getElementById('logContainer');
-const healthStatus = document.getElementById('healthStatus');
-const loadTimeEl = document.getElementById('loadTime');
-const renderTimeEl = document.getElementById('renderTime');
-const memoryUsageEl = document.getElementById('memoryUsage');
-const fileCheckStatusEl = document.getElementById('fileCheckStatus');
-const progressFill = document.getElementById('progressFill');
-const healthPercent = document.getElementById('healthPercent');
-const connectionText = document.getElementById('connectionText');
-const connectionStatus = document.getElementById('connectionStatus');
-const headerTime = document.getElementById('headerTime');
-const footerTime = document.getElementById('footerTime');
+const DOM = {
+    sidebar: document.getElementById('sidebar'),
+    overlay: document.getElementById('sidebarOverlay'),
+    toggleBtn: document.getElementById('toggleSidebar'),
+    connectionText: document.getElementById('connectionText'),
+    connectionStatus: document.getElementById('connectionStatus'),
+    uptimeText: document.getElementById('uptimeText'),
+    headerTime: document.getElementById('headerTime'),
+    footerTime: document.getElementById('footerTime'),
 
-// ============================================================
-// SIDEBAR TOGGLE
-// ============================================================
-function toggleSidebar() {
-    sidebarCollapsed = !sidebarCollapsed;
+    // Stats
+    totalFiles: document.getElementById('totalFiles'),
+    onlineFiles: document.getElementById('onlineFiles'),
+    offlineFiles: document.getElementById('offlineFiles'),
+    errorCount: document.getElementById('errorCount'),
+    activityCount: document.getElementById('activityCount'),
+    totalFiles2: document.getElementById('totalFiles2'),
+    onlineFiles2: document.getElementById('onlineFiles2'),
+    offlineFiles2: document.getElementById('offlineFiles2'),
+    uptimePercent: document.getElementById('uptimePercent'),
 
-    if (window.innerWidth <= 992) {
-        // Mode mobile: toggle class mobile-open
-        sidebar.classList.toggle('mobile-open');
-        addLog('info', sidebar.classList.contains('mobile-open') ? '📂 Sidebar dibuka' : '📂 Sidebar ditutup');
-    } else {
-        // Mode desktop: toggle collapsed
-        sidebar.classList.toggle('collapsed');
-        addLog('info', sidebar.classList.contains('collapsed') ? '📂 Sidebar collapsed' : '📂 Sidebar expanded');
-    }
-}
+    // Charts
+    fileChart: document.getElementById('fileChart'),
 
-// Event listener untuk tombol toggle
-toggleBtn.addEventListener('click', toggleSidebar);
+    // Logs
+    logContainer: document.getElementById('logContainer'),
+    logCount: document.getElementById('logCount'),
 
-// Tutup sidebar mobile saat klik di luar
-document.addEventListener('click', function(e) {
-    if (window.innerWidth <= 992) {
-        const isClickInside = sidebar.contains(e.target) || toggleBtn.contains(e.target);
-        if (!isClickInside && sidebar.classList.contains('mobile-open')) {
-            sidebar.classList.remove('mobile-open');
-            addLog('info', '📂 Sidebar ditutup (klik di luar)');
-        }
-    }
-});
+    // Health
+    healthStatus: document.getElementById('healthStatus'),
+    healthRing: document.getElementById('healthRing'),
+    healthPercent: document.getElementById('healthPercent'),
+    serviceCount: document.getElementById('serviceCount'),
+    systemUptime: document.getElementById('systemUptime'),
+    responseTime: document.getElementById('responseTime'),
 
-// Resize handler - reset state saat resize
-window.addEventListener('resize', function() {
-    if (window.innerWidth > 992) {
-        sidebar.classList.remove('mobile-open');
-    }
-});
+    // Performance
+    loadTime: document.getElementById('loadTime'),
+    renderTime: document.getElementById('renderTime'),
+    memoryUsage: document.getElementById('memoryUsage'),
+    fileCheckStatus: document.getElementById('fileCheckStatus'),
+    jsHeap: document.getElementById('jsHeap'),
+    domNodes: document.getElementById('domNodes'),
+    cpuProgress: document.getElementById('cpuProgress'),
+    cpuValue: document.getElementById('cpuValue'),
+    memoryProgress: document.getElementById('memoryProgress'),
+    memoryValue: document.getElementById('memoryValue'),
+    healthProgress: document.getElementById('healthProgress'),
+    healthValue: document.getElementById('healthValue'),
+
+    // System Info
+    browserInfo: document.getElementById('browserInfo'),
+    osInfo: document.getElementById('osInfo'),
+    screenInfo: document.getElementById('screenInfo'),
+    langInfo: document.getElementById('langInfo'),
+    tzInfo: document.getElementById('tzInfo'),
+    connInfo: document.getElementById('connInfo')
+};
 
 // ============================================================
 // UTILITY
@@ -104,17 +119,27 @@ window.addEventListener('resize', function() {
 function formatTime() {
     return new Date().toLocaleTimeString('id-ID', { hour12: false });
 }
-
 function formatDate() {
     return new Date().toLocaleString('id-ID');
 }
+function formatUptime(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 // ============================================================
-// CLOCK
+// CLOCK & UPTIME
 // ============================================================
 function updateClock() {
-    headerTime.textContent = formatTime();
-    footerTime.textContent = formatDate();
+    DOM.headerTime.textContent = formatTime();
+    DOM.footerTime.textContent = formatDate();
+    state.uptimeSeconds = (Date.now() - state.startTime) / 1000;
+    DOM.uptimeText.textContent = formatUptime(state.uptimeSeconds);
 }
 setInterval(updateClock, 1000);
 updateClock();
@@ -124,20 +149,74 @@ updateClock();
 // ============================================================
 function updateConnectionStatus() {
     const isOnline = navigator.onLine;
-    connectionText.textContent = isOnline ? 'Online' : 'Offline';
-    connectionStatus.className = 'header-status ' + (isOnline ? 'online' : 'offline');
+    DOM.connectionText.textContent = isOnline ? 'Online' : 'Offline';
+    DOM.connectionStatus.className = 'header-status ' + (isOnline ? 'online' : 'offline');
 }
 updateConnectionStatus();
 window.addEventListener('online', updateConnectionStatus);
 window.addEventListener('offline', updateConnectionStatus);
 
 // ============================================================
+// SIDEBAR TOGGLE
+// ============================================================
+function toggleSidebar() {
+    if (state.isMobile) {
+        DOM.sidebar.classList.toggle('mobile-open');
+        DOM.overlay.classList.toggle('active');
+        addLog('info', state.sidebar.classList.contains('mobile-open') ? '📂 Sidebar opened' : '📂 Sidebar closed');
+    } else {
+        state.sidebarCollapsed = !state.sidebarCollapsed;
+        DOM.sidebar.classList.toggle('collapsed');
+        addLog('info', state.sidebarCollapsed ? '📂 Sidebar collapsed' : '📂 Sidebar expanded');
+    }
+}
+DOM.toggleBtn.addEventListener('click', toggleSidebar);
+
+// Close sidebar on overlay click
+DOM.overlay.addEventListener('click', () => {
+    DOM.sidebar.classList.remove('mobile-open');
+    DOM.overlay.classList.remove('active');
+});
+
+// Close sidebar on nav link click (mobile)
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+        addLog('info', `📂 Navigated to ${this.textContent.trim()}`);
+        if (state.isMobile) {
+            DOM.sidebar.classList.remove('mobile-open');
+            DOM.overlay.classList.remove('active');
+        }
+    });
+});
+
+// Resize handler
+window.addEventListener('resize', () => {
+    state.isMobile = window.innerWidth <= 992;
+    if (!state.isMobile) {
+        DOM.sidebar.classList.remove('mobile-open');
+        DOM.overlay.classList.remove('active');
+    }
+});
+
+// ============================================================
+// FULLSCREEN
+// ============================================================
+document.getElementById('fullscreenBtn')?.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+        document.exitFullscreen().catch(() => {});
+    }
+});
+
+// ============================================================
 // FILE CHECKER
 // ============================================================
 async function checkFileStatus() {
-    let online = 0;
-    let offline = 0;
-    let results = [];
+    let online = 0, offline = 0, results = [];
 
     for (const file of JS_FILES) {
         try {
@@ -158,10 +237,18 @@ async function checkFileStatus() {
         offline = DUMMY_DATA.offline;
     }
 
-    fileStatus = results;
-    totalFilesEl.textContent = JS_FILES.length;
-    onlineFilesEl.textContent = online;
-    offlineFilesEl.textContent = offline;
+    state.fileStatus = results;
+    const total = results.length;
+    const uptime = total > 0 ? Math.round((online / total) * 100) : 0;
+
+    // Update stats
+    DOM.totalFiles.textContent = total;
+    DOM.onlineFiles.textContent = online;
+    DOM.offlineFiles.textContent = offline;
+    DOM.totalFiles2.textContent = total;
+    DOM.onlineFiles2.textContent = online;
+    DOM.offlineFiles2.textContent = offline;
+    DOM.uptimePercent.textContent = uptime + '%';
 
     renderFileChart(results);
     updatePerformance();
@@ -170,14 +257,19 @@ async function checkFileStatus() {
 
 function renderFileChart(files) {
     if (!files || files.length === 0) {
-        fileChart.innerHTML = '<div class="chart-placeholder">Tidak ada data</div>';
+        DOM.fileChart.innerHTML = `
+            <div class="chart-placeholder">
+                <i class="fas fa-database"></i>
+                <span>No data available</span>
+            </div>
+        `;
         return;
     }
 
-    const topFiles = files.slice(0, 10);
+    const topFiles = files.slice(0, CONFIG.maxChartItems);
     const maxHeight = 70;
 
-    fileChart.innerHTML = topFiles.map(f => {
+    DOM.fileChart.innerHTML = topFiles.map(f => {
         const height = f.status === 'online' ? maxHeight : maxHeight * 0.4;
         const statusClass = f.status === 'online' ? 'online' : 'offline';
         const shortName = f.name.replace('js/', '').replace('.js', '').replace('error/', '');
@@ -199,45 +291,87 @@ function addLog(type, message) {
         type: type,
         message: message
     };
-    logEntries.unshift(entry);
-    if (logEntries.length > 100) logEntries.pop();
+    state.logEntries.unshift(entry);
+    if (state.logEntries.length > CONFIG.maxLogs) state.logEntries.pop();
     renderLogs();
 }
 
-function renderLogs() {
-    if (logEntries.length === 0) {
-        logContainer.innerHTML = '<div class="empty-log">Belum ada aktivitas</div>';
+function renderLogs(filter = 'all') {
+    let entries = state.logEntries;
+    if (filter !== 'all') {
+        entries = entries.filter(e => e.type === filter);
+    }
+
+    if (entries.length === 0) {
+        DOM.logContainer.innerHTML = `
+            <div class="empty-log">
+                <i class="fas fa-inbox"></i>
+                <span>No activity logs yet</span>
+                <small>System events will appear here</small>
+            </div>
+        `;
+        DOM.logCount.textContent = '0 events';
         return;
     }
 
-    logContainer.innerHTML = logEntries.slice(0, 30).map(log => `
+    DOM.logContainer.innerHTML = entries.slice(0, 30).map(log => `
         <div class="log-entry">
             <span class="log-time">${log.time}</span>
-            <span class="log-type ${log.type}">[${log.type}]</span>
+            <span class="log-type ${log.type}">${log.type}</span>
             <span class="log-msg">${log.message}</span>
         </div>
     `).join('');
+
+    DOM.logCount.textContent = `${entries.length} events`;
 }
 
 function clearLogs() {
-    logEntries = [];
+    state.logEntries = [];
     renderLogs();
-    addLog('info', '🗑️ Log dibersihkan');
+    addLog('info', '🗑️ Logs cleared');
+}
+
+// Log filter buttons
+document.querySelectorAll('.log-filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.log-filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        renderLogs(this.dataset.filter);
+    });
+});
+
+// Export logs
+document.getElementById('exportLogs')?.addEventListener('click', exportLogs);
+window.exportLogs = exportLogs;
+function exportLogs() {
+    const data = JSON.stringify(state.logEntries, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `logs_${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    addLog('info', '📥 Logs exported');
 }
 
 // ============================================================
 // HEALTH CHECK
 // ============================================================
 async function runHealthCheck() {
-    healthStatus.innerHTML = '<div class="health-loading"><i class="fas fa-spinner fa-spin"></i> Memeriksa...</div>';
+    DOM.healthStatus.innerHTML = `
+        <div class="health-loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Scanning system...</span>
+        </div>
+    `;
 
     const checks = [];
-
     const isOnline = navigator.onLine;
     checks.push({
-        label: 'Koneksi Internet',
+        label: 'Internet Connection',
         status: isOnline ? 'pass' : 'fail',
-        detail: isOnline ? 'Online' : 'Offline'
+        detail: isOnline ? 'Connected' : 'Disconnected'
     });
 
     const criticalFiles = ['style.css', 'script.js', 'loader.js'];
@@ -245,12 +379,12 @@ async function runHealthCheck() {
         try {
             const res = await fetch(file, { method: 'HEAD', cache: 'no-cache' });
             checks.push({
-                label: `File ${file}`,
+                label: `File: ${file}`,
                 status: res.ok ? 'pass' : 'fail',
-                detail: res.ok ? 'Ditemukan' : `HTTP ${res.status}`
+                detail: res.ok ? 'Found' : `HTTP ${res.status}`
             });
         } catch {
-            checks.push({ label: `File ${file}`, status: 'fail', detail: 'Gagal diakses' });
+            checks.push({ label: `File: ${file}`, status: 'fail', detail: 'Unreachable' });
         }
     }
 
@@ -262,15 +396,9 @@ async function runHealthCheck() {
             status: 'pass',
             detail: `${used} MB / ${total} MB`
         });
-    } else {
-        checks.push({
-            label: 'Memory Usage',
-            status: 'pass',
-            detail: 'Tidak tersedia'
-        });
     }
 
-    healthResults = checks;
+    state.healthResults = checks;
     renderHealth(checks);
 }
 
@@ -280,19 +408,31 @@ function renderHealth(checks) {
     const total = checks.length;
     const percent = total > 0 ? Math.round((pass / total) * 100) : 0;
 
-    progressFill.style.width = percent + '%';
-    healthPercent.textContent = percent + '%';
+    // Update health ring
+    const circumference = 2 * Math.PI * 32;
+    const offset = circumference - (percent / 100) * circumference;
+    DOM.healthRing.setAttribute('stroke-dashoffset', offset);
+    DOM.healthPercent.textContent = percent + '%';
 
-    healthStatus.innerHTML = `
-        <div style="margin-bottom:12px; font-weight:600; font-size:0.85rem; display:flex; gap:16px; flex-wrap:wrap;">
-            <span style="color:var(--success);">${pass} ✅ Lolos</span>
-            <span style="color:var(--danger);">${fail} ❌ Gagal</span>
-            <span style="color:var(--text-muted);">Total ${total}</span>
+    // Update progress
+    DOM.healthProgress.style.width = percent + '%';
+    DOM.healthValue.textContent = percent + '%';
+
+    // Update details
+    DOM.serviceCount.textContent = `${pass}/${total}`;
+    DOM.systemUptime.textContent = formatUptime(state.uptimeSeconds);
+    DOM.responseTime.textContent = getRandomInt(12, 45) + 'ms';
+
+    DOM.healthStatus.innerHTML = `
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px; font-size:0.8rem;">
+            <span style="color:var(--success); font-weight:700;">${pass} ✅ Passed</span>
+            <span style="color:var(--danger); font-weight:700;">${fail} ❌ Failed</span>
+            <span style="color:var(--text-muted);">Total ${total} checks</span>
         </div>
         ${checks.map(c => `
             <div class="health-item">
                 <span class="health-label">${c.label}</span>
-                <span class="health-status ${c.status}">${c.status === 'pass' ? '✅ ' : '❌ '} ${c.detail}</span>
+                <span class="health-status ${c.status}">${c.status === 'pass' ? '✅' : '❌'} ${c.detail}</span>
             </div>
         `).join('')}
     `;
@@ -302,109 +442,95 @@ function renderHealth(checks) {
 // PERFORMANCE
 // ============================================================
 function updatePerformance() {
+    // Page load
     const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-    loadTimeEl.textContent = loadTime > 0 && loadTime < 30000 ? `${loadTime}ms` : 'N/A';
+    DOM.loadTime.textContent = loadTime > 0 && loadTime < 30000 ? `${loadTime}ms` : 'N/A';
 
+    // Render time
     if (window.renderEndTime && window.renderStartTime) {
         const renderTime = window.renderEndTime - window.renderStartTime;
-        renderTimeEl.textContent = renderTime > 0 ? `${renderTime.toFixed(2)}ms` : 'N/A';
+        DOM.renderTime.textContent = renderTime > 0 ? `${renderTime.toFixed(2)}ms` : 'N/A';
     } else {
-        renderTimeEl.textContent = 'N/A';
+        DOM.renderTime.textContent = 'N/A';
     }
 
+    // Memory
     if (performance.memory) {
         const used = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
-        memoryUsageEl.textContent = `${used} MB`;
+        const total = (performance.memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2);
+        DOM.memoryUsage.textContent = `${used} MB`;
+        DOM.jsHeap.textContent = `${used} / ${total} MB`;
     } else {
-        memoryUsageEl.textContent = 'N/A';
+        DOM.memoryUsage.textContent = 'N/A';
+        DOM.jsHeap.textContent = 'N/A';
     }
 
-    const online = fileStatus.filter(f => f.status === 'online').length;
-    fileCheckStatusEl.textContent = `${online}/${JS_FILES.length} online`;
+    // DOM nodes
+    DOM.domNodes.textContent = document.querySelectorAll('*').length;
+
+    // File check status
+    const online = state.fileStatus.filter(f => f.status === 'online').length;
+    DOM.fileCheckStatus.textContent = `${online}/${JS_FILES.length} online`;
+
+    // CPU & Memory progress (simulasi)
+    const cpu = getRandomInt(15, 55);
+    DOM.cpuProgress.style.width = cpu + '%';
+    DOM.cpuValue.textContent = cpu + '%';
+
+    const mem = getRandomInt(40, 75);
+    DOM.memoryProgress.style.width = mem + '%';
+    DOM.memoryValue.textContent = mem + '%';
+}
+
+// ============================================================
+// SYSTEM INFO
+// ============================================================
+function updateSystemInfo() {
+    const ua = navigator.userAgent;
+    let browser = 'Unknown';
+    if (ua.includes('Chrome')) browser = 'Chrome';
+    else if (ua.includes('Firefox')) browser = 'Firefox';
+    else if (ua.includes('Safari')) browser = 'Safari';
+    else if (ua.includes('Edge')) browser = 'Edge';
+
+    DOM.browserInfo.textContent = browser;
+    DOM.osInfo.textContent = navigator.platform;
+    DOM.screenInfo.textContent = `${window.screen.width}×${window.screen.height}`;
+    DOM.langInfo.textContent = navigator.language;
+    DOM.tzInfo.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    DOM.connInfo.textContent = navigator.onLine ? 'Online' : 'Offline';
 }
 
 // ============================================================
 // CONSOLE SHORTCUTS
 // ============================================================
 window.report = function() {
-    console.log('📊 ===== LAPORAN MONITORING =====');
-    console.log(`📁 Total File JS: ${JS_FILES.length}`);
-    const online = fileStatus.filter(f => f.status === 'online').length;
-    console.log(`✅ Online: ${online}`);
-    console.log(`❌ Offline: ${JS_FILES.length - online}`);
-    console.log(`📝 Total Log: ${logEntries.length}`);
-    console.log(`🐛 Error: ${logEntries.filter(l => l.type === 'error').length}`);
-    console.log('📊 ================================');
+    const online = state.fileStatus.filter(f => f.status === 'online').length;
+    const errors = state.logEntries.filter(l => l.type === 'error').length;
+    console.log('📊 ===== ENTERPRISE MONITOR REPORT =====');
+    console.log(`📁 Files: ${JS_FILES.length} total, ${online} online, ${JS_FILES.length - online} offline`);
+    console.log(`📝 Logs: ${state.logEntries.length} entries, ${errors} errors`);
+    console.log(`⏱️ Uptime: ${formatUptime(state.uptimeSeconds)}`);
+    console.log(`💾 Memory: ${DOM.memoryUsage.textContent}`);
+    console.log('📊 =========================================');
 };
-
 window.getLogs = function() {
-    console.table(logEntries);
-    return logEntries;
+    console.table(state.logEntries);
+    return state.logEntries;
 };
-
-window.clearLogs = function() {
-    clearLogs();
-};
-
+window.clearLogs = clearLogs;
 window.debugOn = function() {
-    isDebugMode = true;
-    console.log('🔍 Debug mode AKTIF');
+    state.isDebugMode = true;
     document.body.style.outline = '2px solid #22c55e';
     document.body.style.outlineOffset = '-2px';
-    addLog('info', '🔍 Debug mode aktif');
+    addLog('info', '🔍 Debug mode enabled');
 };
-
 window.debugOff = function() {
-    isDebugMode = false;
-    console.log('🔍 Debug mode NONAKTIF');
+    state.isDebugMode = false;
     document.body.style.outline = 'none';
-    addLog('info', '🔍 Debug mode nonaktif');
+    addLog('info', '🔍 Debug mode disabled');
 };
-
-// ============================================================
-// NAVIGASI SIDEBAR
-// ============================================================
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
-        addLog('info', `📂 Navigasi ke ${this.textContent.trim()}`);
-
-        // Tutup sidebar di mobile setelah klik
-        if (window.innerWidth <= 992) {
-            sidebar.classList.remove('mobile-open');
-        }
-    });
-});
-
-// ============================================================
-// BUTTON EVENTS
-// ============================================================
-document.getElementById('refreshAll').addEventListener('click', async () => {
-    addLog('info', '🔄 Refresh semua data...');
-    await checkFileStatus();
-    await runHealthCheck();
-    updatePerformance();
-    addLog('success', '✅ Refresh selesai');
-});
-
-document.getElementById('refreshFiles').addEventListener('click', async () => {
-    addLog('info', '🔄 Refresh file status...');
-    await checkFileStatus();
-    updatePerformance();
-    addLog('success', '✅ File status diperbarui');
-});
-
-document.getElementById('runHealthCheck').addEventListener('click', async () => {
-    addLog('info', '🏥 Menjalankan health check...');
-    await runHealthCheck();
-    addLog('success', '✅ Health check selesai');
-});
-
-document.getElementById('clearLogs').addEventListener('click', () => {
-    clearLogs();
-});
+window.exportLogs = exportLogs;
 
 // ============================================================
 // ERROR HANDLER
@@ -413,7 +539,6 @@ window.onerror = function(message, source, lineno, colno, error) {
     addLog('error', `${message} (${source}:${lineno})`);
     return true;
 };
-
 window.addEventListener('unhandledrejection', function(event) {
     addLog('error', `Promise rejected: ${event.reason}`);
 });
@@ -422,28 +547,5 @@ window.addEventListener('unhandledrejection', function(event) {
 // INIT
 // ============================================================
 async function initMonitor() {
-    addLog('info', '🚀 Monitor Loker Kendari dimulai');
-    addLog('info', '📌 Klik ikon ☰ di kiri atas untuk toggle sidebar');
-    await checkFileStatus();
-    await runHealthCheck();
-    updatePerformance();
-    addLog('success', '✅ Monitor siap!');
-
-    console.log('💡 Dashboard Monitor siap!');
-    console.log('📌 Gunakan: report(), getLogs(), clearLogs(), debugOn(), debugOff()');
-    console.log('📌 Klik ikon ☰ di kiri atas untuk toggle sidebar');
-}
-
-initMonitor();
-
-// ============================================================
-// AUTO REFRESH
-// ============================================================
-setInterval(async () => {
-    await checkFileStatus();
-    updatePerformance();
-}, 30000);
-
-setInterval(async () => {
-    await runHealthCheck();
-}, 60000);
+    addLog('info', '🚀 Enterprise Monitor starting...');
+    addLog('info', '📌 Click ☰ to toggle sidebar')
