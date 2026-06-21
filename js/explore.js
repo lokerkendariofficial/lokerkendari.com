@@ -1,8 +1,9 @@
-// ===== EXPLORE LOGIC =====
 export function initExplore() {
     const exploreModal = document.getElementById('exploreModal');
     const closeExplore = document.getElementById('closeExplore');
     const navExplore = document.getElementById('navExplore');
+
+    if (!exploreModal || !closeExplore || !navExplore) return;
 
     navExplore.addEventListener('click', function(e) {
         e.preventDefault();
