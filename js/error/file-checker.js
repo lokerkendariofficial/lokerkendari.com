@@ -1,5 +1,6 @@
-// ===== FILE CHECKER =====
-// Memeriksa apakah file-file penting ada
+// ============================================================
+// FILE-CHECKER.JS - Memeriksa File Penting
+// ============================================================
 
 import { showNotification } from './notification.js';
 
@@ -28,6 +29,7 @@ import { showNotification } from './notification.js';
             })
             .catch(() => {
                 console.log(`%c❌ ${file} gagal diakses`, 'color: #ef4444;');
+                showNotification(`❌ File ${file} tidak dapat diakses!`, 'error');
             });
     });
 })();
