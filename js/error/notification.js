@@ -1,8 +1,9 @@
-// ===== NOTIFICATION =====
-// Menampilkan notifikasi di pojok kanan bawah
+// ============================================================
+// NOTIFICATION.JS - Menampilkan Notifikasi di Pojok Kanan Bawah
+// ============================================================
 
 export function showNotification(message, type = 'info') {
-    // Hanya tampilkan di development
+    // Hanya tampilkan di development (localhost)
     if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
         return;
     }
