@@ -5,7 +5,7 @@
 import { loadJobs, initMainEvents } from './js/main.js';
 import { initInbox } from './js/inbox.js';
 import { initExplore } from './js/explore.js';
-import { initNav } from './js/nav.js';   // ← Logika navigasi dipisah
+import { initNav } from './js/nav.js';
 
 function initApp() {
     console.log('🚀 Loker Kendari - Inisialisasi...');
@@ -39,7 +39,7 @@ if (isAppReady()) {
         initApp();
     });
 
-    // Fallback polling (jaga-jaga event tidak terkirim)
+    // Fallback polling
     let attempts = 0;
     const maxAttempts = 50;
     const fallbackTimer = setInterval(() => {
