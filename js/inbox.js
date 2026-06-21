@@ -1,8 +1,9 @@
-// ===== INBOX LOGIC =====
 export function initInbox() {
     const inboxPopup = document.getElementById('inboxPopup');
     const closeInbox = document.getElementById('closeInbox');
     const navInbox = document.getElementById('navInbox');
+
+    if (!inboxPopup || !closeInbox || !navInbox) return;
 
     navInbox.addEventListener('click', function(e) {
         e.preventDefault();
