@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design System - Loker Kendari</title>
+    <link rel="stylesheet" href="design-system.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+    <div class="ds-container">
+        <!-- Header -->
+        <header class="ds-header">
+            <h1>🎨 Design System</h1>
+            <p>Loker Kendari — Komponen UI & Tema</p>
+            <span class="ds-version">D.1.2</span>
+        </header>
+
+        <!-- Theme Switcher -->
+        <section class="ds-section">
+            <h2>Tema Aktif</h2>
+            <div class="ds-theme-switcher">
+                <button class="ds-theme-btn active" data-theme="light">☀️ Light</button>
+                <button class="ds-theme-btn" data-theme="dark">🌙 Dark</button>
+                <button class="ds-theme-btn" data-theme="modern">✨ Modern</button>
+                <button class="ds-theme-btn" data-theme="aqua">🌊 Aqua</button>
+            </div>
+        </section>
+
+        <!-- Tokens -->
+        <section class="ds-section">
+            <h2>📐 Tokens</h2>
+            <div class="ds-tokens-grid">
+                <div class="ds-token-card">
+                    <h3>Warna</h3>
+                    <div class="ds-color-grid">
+                        <div class="ds-color-swatch" style="background:var(--color-primary);">Primary</div>
+                        <div class="ds-color-swatch" style="background:var(--color-secondary);">Secondary</div>
+                        <div class="ds-color-swatch" style="background:var(--color-bg);">Background</div>
+                        <div class="ds-color-swatch" style="background:var(--color-text);">Text</div>
+                        <div class="ds-color-swatch" style="background:var(--color-card-bg);">Card</div>
+                        <div class="ds-color-swatch" style="background:var(--color-border);">Border</div>
+                    </div>
+                </div>
+                <div class="ds-token-card">
+                    <h3>Tipografi</h3>
+                    <div style="font-family:var(--font-family);">
+                        <p style="font-size:var(--font-size-xs);">Extra Small</p>
+                        <p style="font-size:var(--font-size-sm);">Small</p>
+                        <p style="font-size:var(--font-size-md);">Medium</p>
+                        <p style="font-size:var(--font-size-lg);">Large</p>
+                        <p style="font-size:var(--font-size-xl);">Extra Large</p>
+                    </div>
+                </div>
+                <div class="ds-token-card">
+                    <h3>Spacing</h3>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                        <div style="padding:var(--space-xs); background:var(--color-primary-light);">XS</div>
+                        <div style="padding:var(--space-sm); background:var(--color-primary-light);">SM</div>
+                        <div style="padding:var(--space-md); background:var(--color-primary-light);">MD</div>
+                        <div style="padding:var(--space-lg); background:var(--color-primary-light);">LG</div>
+                        <div style="padding:var(--space-xl); background:var(--color-primary-light);">XL</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Elements: Buttons -->
+        <section class="ds-section">
+            <h2>🔘 Buttons</h2>
+            <div class="ds-component-grid">
+                <button class="btn btn-primary">Primary</button>
+                <button class="btn btn-secondary">Secondary</button>
+                <button class="btn btn-outline">Outline</button>
+                <button class="btn btn-primary" disabled>Disabled</button>
+            </div>
+        </section>
+
+        <!-- Elements: Inputs -->
+        <section class="ds-section">
+            <h2>📝 Inputs</h2>
+            <div class="ds-component-grid">
+                <input type="text" placeholder="Text input" class="ds-input" />
+                <input type="email" placeholder="Email input" class="ds-input" />
+                <input type="password" placeholder="Password" class="ds-input" />
+                <select class="ds-select">
+                    <option>Option 1</option>
+                    <option>Option 2</option>
+                </select>
+                <textarea class="ds-textarea" placeholder="Textarea" rows="3"></textarea>
+            </div>
+        </section>
+
+        <!-- Elements: Badges -->
+        <section class="ds-section">
+            <h2>🏷️ Badges</h2>
+            <div class="ds-component-grid">
+                <span class="badge">Default</span>
+                <span class="badge badge-primary">Primary</span>
+                <span class="badge badge-success">Success</span>
+                <span class="badge badge-warning">Warning</span>
+                <span class="badge badge-danger">Danger</span>
+                <span class="badge badge-info">Info</span>
+            </div>
+        </section>
+
+        <!-- Elements: Cards -->
+        <section class="ds-section">
+            <h2>🃏 Cards</h2>
+            <div class="ds-component-grid">
+                <div class="card">
+                    <h3>Card Title</h3>
+                    <p>This is a sample card with some content. It uses the card design system.</p>
+                    <button class="btn btn-primary">Action</button>
+                </div>
+                <div class="card">
+                    <div style="background:var(--color-primary); color:#fff; padding:var(--space-md); border-radius:var(--radius-md);">
+                        <h3>Featured Card</h3>
+                        <p>This card uses the primary color as background.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="ds-footer">
+            <p>&copy; 2026 Loker Kendari — Design System D.1.2</p>
+        </footer>
+    </div>
+
+    <script>
+        // Theme Switcher
+        const themeBtns = document.querySelectorAll('.ds-theme-btn');
+        const designSystemCss = document.querySelector('link[href="design-system.css"]');
+
+        themeBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                themeBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const theme = this.dataset.theme;
+                // Ubah tema di root
+                document.documentElement.setAttribute('data-theme', theme);
+                // Simpan preferensi
+                localStorage.setItem('ds-theme', theme);
+            });
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('ds-theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.querySelector(`.ds-theme-btn[data-theme="${savedTheme}"]`)?.classList.add('active');
+    </script>
+</body>
+</html>
