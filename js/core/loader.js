@@ -44,9 +44,11 @@ async function loadComponents() {
     app.innerHTML = html;
     console.log(`✅ Komponen dimuat: ${successCount} berhasil, ${failCount} gagal`);
 
+    // Kirim event ke script.js
     document.dispatchEvent(new CustomEvent('components-loaded', {
         detail: { successCount, failCount }
     }));
 }
 
+// Jalankan loader
 loadComponents();
