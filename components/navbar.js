@@ -9,12 +9,14 @@ export const navbar = `
                 <img src="assets/images/logo.svg" alt="Loker Kendari" width="140" height="35" />
             </a>
 
+            <!-- ID: hamburgerBtn → match dengan nav-handler.js -->
             <button class="hamburger" id="hamburgerBtn">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
 
+            <!-- ID: mobileMenu → match dengan nav-handler.js -->
             <div class="nav-menu-mobile" id="mobileMenu">
                 <a href="/" class="nav-link active">Beranda</a>
                 <a href="/#jobs" class="nav-link">Lowongan</a>
