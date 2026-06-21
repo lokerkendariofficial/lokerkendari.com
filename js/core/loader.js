@@ -4,11 +4,8 @@
 
 const components = [
     'navbar',
-    'hero',
-    'stats',
     'filter',
     'jobs',
-    'about',
     'inbox',
     'explore',
     'footer'
