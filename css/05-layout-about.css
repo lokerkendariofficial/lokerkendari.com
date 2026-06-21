@@ -1,0 +1,63 @@
+/* ============================================================
+   05-LAYOUT-ABOUT.CSS - About Section
+   ============================================================ */
+
+.about-section {
+    padding: 60px 0;
+    background: #fff;
+}
+
+.about-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.about-content p {
+    color: var(--gray-600);
+    margin: 16px 0 28px;
+    font-size: 1.05rem;
+}
+
+.about-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.about-feature {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.about-feature span {
+    font-size: 1.6rem;
+    line-height: 1.4;
+}
+
+.about-feature h4 {
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.about-feature p {
+    color: var(--gray-500);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.about-illustration {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-emoji {
+    font-size: 10rem;
+    animation: float 4s ease-in-out infinite;
+}
