@@ -1,16 +1,22 @@
 /* ============================================================
    STYLE.CSS - FILE INDUK CSS
-   Versi: P.1.3 / D.1.2
+   Versi: Peta 2.0 (Tanpa Sidebar Kiri)
    ============================================================ */
 
-/* 1. DESIGN SYSTEM — TOKENS */
+/* 1. DESIGN SYSTEM — TOKENS (Variabel Dasar) */
 @import url('css/design-system/tokens/typography.css');
 @import url('css/design-system/tokens/spacing.css');
 
 /* 2. DESIGN SYSTEM — TEMA (Default: Light) */
 @import url('css/design-system/tokens/theme-light.css');
 
-/* 3. DESIGN SYSTEM — ELEMENTS */
+/* Aktifkan tema lain dengan mengganti import di atas:
+   @import url('css/design-system/tokens/theme-dark.css');
+   @import url('css/design-system/tokens/theme-modern.css');
+   @import url('css/design-system/tokens/theme-aqua.css');
+   ============================================================ */
+
+/* 3. DESIGN SYSTEM — ELEMENTS (Komponen UI Dasar) */
 @import url('css/design-system/elements/buttons.css');
 @import url('css/design-system/elements/inputs.css');
 @import url('css/design-system/elements/badges.css');
@@ -23,12 +29,14 @@
 @import url('css/02-layout-navbar.css');
 @import url('css/06-layout-footer.css');
 
-/* 6. KOMPONEN */
+/* 6. KOMPONEN LAMA (Layout spesifik) */
+@import url('css/03-layout-hero.css');
+@import url('css/04-layout-stats.css');
+@import url('css/05-layout-about.css');
 @import url('css/07-components-buttons.css');
 @import url('css/08-components-filter.css');
 @import url('css/09-components-jobs.css');
 @import url('css/10-components-modal.css');
-@import url('css/11-components-sidebar.css');  // ← TAMBAHKAN INI!
 
 /* 7. RESPONSIVE */
 @import url('css/12-responsive.css');
