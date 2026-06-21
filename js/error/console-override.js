@@ -1,5 +1,6 @@
-// ===== CONSOLE OVERRIDE =====
-// Override console.error untuk tracking
+// ============================================================
+// CONSOLE-OVERRIDE.JS - Override console.error
+// ============================================================
 
 import { showNotification } from './notification.js';
 
