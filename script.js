@@ -16,6 +16,26 @@ function initApp() {
     initExplore();
     initNav();
 
+    // ===== SIDEBAR TOGGLE (Mobile) =====
+    const sidebar = document.getElementById('sidebarLeft');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+        });
+    }
+
+    // Tutup sidebar saat klik di luar (mobile)
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('open')) {
+            const isInside = sidebar.contains(e.target) || sidebarToggle?.contains(e.target);
+            if (!isInside) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+
     console.log('✅ Loker Kendari siap!');
 }
 
