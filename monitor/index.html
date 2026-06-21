@@ -1,544 +1,173 @@
-html
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Enterprise Monitor - Loker Kendari</title>
+    <title>Monitor - Loker Kendari</title>
     <link rel="stylesheet" href="monitor.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
-    <div class="monitor-layout">
+    <div class="monitor-container">
+        <!-- Header -->
+        <header class="monitor-header">
+            <div class="header-left">
+                <i class="fas fa-heartbeat"></i>
+                <h1>Loker Kendari <span>Monitor</span></h1>
+            </div>
+            <div class="header-right">
+                <span class="status-badge" id="connectionStatus">
+                    <i class="fas fa-wifi"></i> <span id="connectionText">Online</span>
+                </span>
+                <span class="status-badge">
+                    <i class="fas fa-clock"></i> <span id="updateTime">-</span>
+                </span>
+            </div>
+        </header>
 
-        <!-- ============================================================
-        SIDEBAR
-        ============================================================ -->
-        <aside class="sidebar" id="sidebar">
-            <!-- Brand -->
-            <div class="sidebar-brand">
-                <div class="brand-icon">
-                    <i class="fas fa-hexagon"></i>
-                    <i class="fas fa-heartbeat brand-heart"></i>
-                </div>
-                <div class="brand-text">
-                    <span class="brand-title">Loker<span>Monitor</span></span>
-                    <span class="brand-version">v2.0</span>
+        <!-- Stats Overview -->
+        <section class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-file-code"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="totalFiles">0</span>
+                    <span class="stat-label">Total File JS</span>
                 </div>
             </div>
-
-            <!-- Search -->
-            <div class="sidebar-search">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search dashboards..." />
-                <kbd>⌘K</kbd>
-            </div>
-
-            <!-- Navigation -->
-            <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <span class="nav-label">Main</span>
-                    <a href="#" class="nav-link active">
-                        <i class="fas fa-th-large"></i>
-                        <span>Dashboard</span>
-                        <span class="nav-badge">12</span>
-                    </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-file-code"></i>
-                        <span>File Status</span>
-                        <span class="nav-badge warning">3</span>
-                    </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-list-ul"></i>
-                        <span>Activity Logs</span>
-                    </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-heartbeat"></i>
-                        <span>Health Check</span>
-                        <span class="nav-badge success">98%</span>
-                    </a>
-                </div>
-
-                <div class="nav-section">
-                    <span class="nav-label">Analytics</span>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Performance</span>
-                    </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-users"></i>
-                        <span>User Activity</span>
-                    </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-database"></i>
-                        <span>Data Usage</span>
-                    </a>
-                </div>
-
-                <div class="nav-section">
-                    <span class="nav-label">System</span>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Security</span>
-                        <span class="nav-badge success"><i class="fas fa-lock"></i></span>
-                    </a>
-                </div>
-
-                <div class="nav-section">
-                    <span class="nav-label">Favorites</span>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-star"></i>
-                        <span>Saved Reports</span>
-                    </a>
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-bookmark"></i>
-                        <span>Quick Views</span>
-                    </a>
-                </div>
-            </nav>
-
-            <!-- Sidebar Footer -->
-            <div class="sidebar-footer">
-                <div class="user-info">
-                    <div class="user-avatar">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%231a5cff'/%3E%3Ctext x='20' y='26' text-anchor='middle' font-size='18' fill='%23fff' font-family='Inter' font-weight='700'%3EA%3C/text%3E%3C/svg%3E" alt="Avatar" />
-                        <span class="online-dot"></span>
-                    </div>
-                    <div class="user-details">
-                        <span class="user-name">Admin Loker</span>
-                        <span class="user-role">Super Administrator</span>
-                    </div>
-                </div>
-                <div class="sidebar-actions">
-                    <button class="btn-icon" title="Settings"><i class="fas fa-cog"></i></button>
-                    <button class="btn-icon" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+            <div class="stat-card success">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="onlineFiles">0</span>
+                    <span class="stat-label">File Online</span>
                 </div>
             </div>
-        </aside>
+            <div class="stat-card danger">
+                <div class="stat-icon"><i class="fas fa-exclamation-circle"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="offlineFiles">0</span>
+                    <span class="stat-label">File Offline</span>
+                </div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon"><i class="fas fa-bug"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="errorCount">0</span>
+                    <span class="stat-label">Total Error</span>
+                </div>
+            </div>
+            <div class="stat-card info">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="activityCount">0</span>
+                    <span class="stat-label">Aktivitas User</span>
+                </div>
+            </div>
+        </section>
 
-        <!-- ============================================================
-        OVERLAY (Mobile)
-        ============================================================ -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-        <!-- ============================================================
-        MAIN CONTENT
-        ============================================================ -->
-        <main class="main-content" id="mainContent">
-
-            <!-- ===== TOP HEADER ===== -->
-            <header class="main-header">
-                <div class="header-left">
-                    <button class="btn-toggle-sidebar" id="toggleSidebar" aria-label="Toggle Sidebar">
-                        <i class="fas fa-bars"></i>
+        <!-- Main Grid -->
+        <div class="monitor-grid">
+            <!-- File Status -->
+            <section class="panel panel-files">
+                <div class="panel-header">
+                    <h2><i class="fas fa-folder-open"></i> Status File JS</h2>
+                    <button id="refreshFiles" class="btn-refresh">
+                        <i class="fas fa-sync-alt"></i> Refresh
                     </button>
-                    <div class="header-breadcrumb">
-                        <h1>Dashboard</h1>
-                        <div class="breadcrumb-trail">
-                            <span>Monitor</span>
-                            <i class="fas fa-chevron-right"></i>
-                            <span class="active">Overview</span>
-                        </div>
-                    </div>
                 </div>
-                <div class="header-right">
-                    <div class="header-status-group">
-                        <span class="header-status" id="connectionStatus">
-                            <i class="fas fa-wifi"></i>
-                            <span id="connectionText">Online</span>
-                        </span>
-                        <span class="header-status uptime" id="uptimeDisplay">
-                            <i class="fas fa-clock"></i>
-                            <span id="uptimeText">00:00:00</span>
-                        </span>
-                    </div>
-                    <div class="header-actions">
-                        <button class="btn-header" id="refreshAll" title="Refresh All">
-                            <i class="fas fa-sync-alt"></i>
-                        </button>
-                        <button class="btn-header has-notif" title="Notifications">
-                            <i class="fas fa-bell"></i>
-                            <span class="notif-badge">3</span>
-                        </button>
-                        <button class="btn-header" title="Full Screen" id="fullscreenBtn">
-                            <i class="fas fa-expand"></i>
-                        </button>
-                    </div>
+                <div class="panel-body" id="fileList">
+                    <div class="loading-text"><i class="fas fa-spinner fa-spin"></i> Memuat file...</div>
                 </div>
-            </header>
+            </section>
 
-            <!-- ===== STATS ROW ===== -->
-            <section class="stats-row">
-                <div class="stat-card" style="border-left-color: var(--primary);">
-                    <div class="stat-card-icon" style="background: var(--primary-light); color: var(--primary);">
-                        <i class="fas fa-file-code"></i>
-                    </div>
-                    <div class="stat-card-info">
-                        <span class="stat-card-number" id="totalFiles">0</span>
-                        <span class="stat-card-label">Total Files</span>
-                    </div>
-                    <div class="stat-card-trend up">
-                        <i class="fas fa-arrow-up"></i> 12%
-                    </div>
+            <!-- Log Aktivitas -->
+            <section class="panel panel-logs">
+                <div class="panel-header">
+                    <h2><i class="fas fa-list-ul"></i> Log Aktivitas</h2>
+                    <button id="clearLogs" class="btn-clear">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
                 </div>
-                <div class="stat-card" style="border-left-color: var(--success);">
-                    <div class="stat-card-icon" style="background: #dcfce7; color: var(--success);">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="stat-card-info">
-                        <span class="stat-card-number" id="onlineFiles">0</span>
-                        <span class="stat-card-label">Online</span>
-                    </div>
-                    <div class="stat-card-trend up">
-                        <i class="fas fa-arrow-up"></i> 8%
-                    </div>
+                <div class="panel-body log-container" id="logContainer">
+                    <div class="empty-log">Belum ada aktivitas</div>
                 </div>
-                <div class="stat-card" style="border-left-color: var(--danger);">
-                    <div class="stat-card-icon" style="background: #fee2e2; color: var(--danger);">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div class="stat-card-info">
-                        <span class="stat-card-number" id="offlineFiles">0</span>
-                        <span class="stat-card-label">Offline</span>
-                    </div>
-                    <div class="stat-card-trend down">
-                        <i class="fas fa-arrow-down"></i> 3%
-                    </div>
+            </section>
+
+            <!-- Health Check -->
+            <section class="panel panel-health">
+                <div class="panel-header">
+                    <h2><i class="fas fa-heartbeat"></i> Health Check</h2>
+                    <button id="runHealthCheck" class="btn-refresh">
+                        <i class="fas fa-sync-alt"></i> Check
+                    </button>
                 </div>
-                <div class="stat-card" style="border-left-color: var(--warning);">
-                    <div class="stat-card-icon" style="background: #fef3c7; color: var(--warning);">
-                        <i class="fas fa-bug"></i>
-                    </div>
-                    <div class="stat-card-info">
-                        <span class="stat-card-number" id="errorCount">0</span>
-                        <span class="stat-card-label">Errors</span>
-                    </div>
-                    <div class="stat-card-trend down">
-                        <i class="fas fa-arrow-down"></i> 5%
-                    </div>
+                <div class="panel-body" id="healthStatus">
+                    <div class="loading-text">Menjalankan health check...</div>
                 </div>
-                <div class="stat-card" style="border-left-color: var(--info);">
-                    <div class="stat-card-icon" style="background: #dbeafe; color: var(--info);">
-                        <i class="fas fa-users"></i>
+            </section>
+
+            <!-- Performance -->
+            <section class="panel panel-performance">
+                <div class="panel-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Performa</h2>
+                </div>
+                <div class="panel-body" id="performanceData">
+                    <div class="perf-item">
+                        <span class="perf-label">Load Time</span>
+                        <span class="perf-value" id="loadTime">-</span>
                     </div>
-                    <div class="stat-card-info">
-                        <span class="stat-card-number" id="activityCount">0</span>
-                        <span class="stat-card-label">Activities</span>
+                    <div class="perf-item">
+                        <span class="perf-label">Render Time</span>
+                        <span class="perf-value" id="renderTime">-</span>
                     </div>
-                    <div class="stat-card-trend up">
-                        <i class="fas fa-arrow-up"></i> 24%
+                    <div class="perf-item">
+                        <span class="perf-label">Memory Usage</span>
+                        <span class="perf-value" id="memoryUsage">-</span>
+                    </div>
+                    <div class="perf-item">
+                        <span class="perf-label">File Check</span>
+                        <span class="perf-value" id="fileCheckStatus">-</span>
                     </div>
                 </div>
             </section>
 
-            <!-- ===== DASHBOARD GRID ===== -->
-            <div class="dashboard-grid">
-
-                <!-- ====== 1. FILE STATUS CHART ====== -->
-                <section class="widget widget-chart" style="grid-column: span 2;">
-                    <div class="widget-header">
-                        <div class="widget-header-left">
-                            <h3><i class="fas fa-file-code"></i> File Status Overview</h3>
-                            <span class="widget-subtitle">Real-time file health monitoring</span>
-                        </div>
-                        <div class="widget-actions">
-                            <div class="widget-filter-group">
-                                <button class="filter-btn active">All</button>
-                                <button class="filter-btn">Online</button>
-                                <button class="filter-btn">Offline</button>
-                            </div>
-                            <button class="btn-widget-refresh" id="refreshFiles">
-                                <i class="fas fa-sync-alt"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="widget-body">
-                        <div class="chart-stats">
-                            <div class="stat-mini">
-                                <span class="stat-mini-number" id="totalFiles2">0</span>
-                                <span class="stat-mini-label">Total</span>
-                            </div>
-                            <div class="stat-mini success">
-                                <span class="stat-mini-number" id="onlineFiles2">0</span>
-                                <span class="stat-mini-label">Online</span>
-                            </div>
-                            <div class="stat-mini danger">
-                                <span class="stat-mini-number" id="offlineFiles2">0</span>
-                                <span class="stat-mini-label">Offline</span>
-                            </div>
-                            <div class="stat-mini info">
-                                <span class="stat-mini-number" id="uptimePercent">0%</span>
-                                <span class="stat-mini-label">Uptime</span>
-                            </div>
-                        </div>
-                        <div class="chart-container">
-                            <div class="chart-bars" id="fileChart">
-                                <div class="chart-placeholder">
-                                    <i class="fas fa-spinner fa-spin"></i>
-                                    <span>Loading chart data...</span>
-                                </div>
-                            </div>
-                            <div class="chart-legend">
-                                <span><span class="legend-dot online"></span> Online</span>
-                                <span><span class="legend-dot offline"></span> Offline</span>
-                                <span><span class="legend-dot warning"></span> Warning</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- ====== 2. ACTIVITY LOGS ====== -->
-                <section class="widget widget-logs">
-                    <div class="widget-header">
-                        <div class="widget-header-left">
-                            <h3><i class="fas fa-list-ul"></i> Activity Logs</h3>
-                            <span class="widget-subtitle">Live system events</span>
-                        </div>
-                        <div class="widget-actions">
-                            <div class="log-filter">
-                                <button class="log-filter-btn active" data-filter="all">All</button>
-                                <button class="log-filter-btn" data-filter="info">Info</button>
-                                <button class="log-filter-btn" data-filter="warn">Warn</button>
-                                <button class="log-filter-btn" data-filter="error">Error</button>
-                                <button class="log-filter-btn" data-filter="success">Success</button>
-                            </div>
-                            <button class="btn-widget-clear" id="clearLogs">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="widget-body log-container" id="logContainer">
-                        <div class="empty-log">
-                            <i class="fas fa-inbox"></i>
-                            <span>No activity logs yet</span>
-                            <small>System events will appear here</small>
-                        </div>
-                    </div>
-                    <div class="log-footer">
-                        <span id="logCount">0 events</span>
-                        <button class="btn-log-export" id="exportLogs">
-                            <i class="fas fa-download"></i> Export
-                        </button>
-                    </div>
-                </section>
-
-                <!-- ====== 3. HEALTH CHECK ====== -->
-                <section class="widget widget-health">
-                    <div class="widget-header">
-                        <div class="widget-header-left">
-                            <h3><i class="fas fa-heartbeat"></i> System Health</h3>
-                            <span class="widget-subtitle">Infrastructure status</span>
-                        </div>
-                        <div class="widget-actions">
-                            <button class="btn-widget-refresh" id="runHealthCheck">
-                                <i class="fas fa-sync-alt"></i> Check
-                            </button>
-                        </div>
-                    </div>
-                    <div class="widget-body" id="healthStatus">
-                        <div class="health-loading">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <span>Scanning system...</span>
-                        </div>
-                    </div>
-                    <div class="health-summary">
-                        <div class="health-ring">
-                            <svg width="80" height="80" viewBox="0 0 80 80">
-                                <circle cx="40" cy="40" r="32" fill="none" stroke="#e2e8f0" stroke-width="6"/>
-                                <circle cx="40" cy="40" r="32" fill="none" stroke="#22c55e" stroke-width="6"
-                                    stroke-dasharray="201" stroke-dashoffset="30" stroke-linecap="round"
-                                    id="healthRing"/>
-                            </svg>
-                            <span class="health-ring-text" id="healthPercent">85%</span>
-                        </div>
-                        <div class="health-details">
-                            <div class="health-detail-item">
-                                <span class="health-detail-label">Services</span>
-                                <span class="health-detail-value" id="serviceCount">0/0</span>
-                            </div>
-                            <div class="health-detail-item">
-                                <span class="health-detail-label">Uptime</span>
-                                <span class="health-detail-value" id="systemUptime">-</span>
-                            </div>
-                            <div class="health-detail-item">
-                                <span class="health-detail-label">Response</span>
-                                <span class="health-detail-value" id="responseTime">-</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-
-                <!-- ====== 4. PERFORMANCE METRICS ====== -->
-                <section class="widget widget-performance">
-                    <div class="widget-header">
-                        <div class="widget-header-left">
-                            <h3><i class="fas fa-tachometer-alt"></i> Performance</h3>
-                            <span class="widget-subtitle">System metrics &amp; benchmarks</span>
-                        </div>
-                    </div>
-                    <div class="widget-body">
-                        <div class="perf-grid">
-                            <div class="perf-item">
-                                <span class="perf-label">Page Load</span>
-                                <span class="perf-value" id="loadTime">-</span>
-                            </div>
-                            <div class="perf-item">
-                                <span class="perf-label">Render Time</span>
-                                <span class="perf-value" id="renderTime">-</span>
-                            </div>
-                            <div class="perf-item">
-                                <span class="perf-label">Memory Usage</span>
-                                <span class="perf-value" id="memoryUsage">-</span>
-                            </div>
-                            <div class="perf-item">
-                                <span class="perf-label">File Check</span>
-                                <span class="perf-value" id="fileCheckStatus">-</span>
-                            </div>
-                            <div class="perf-item">
-                                <span class="perf-label">JS Heap</span>
-                                <span class="perf-value" id="jsHeap">-</span>
-                            </div>
-                            <div class="perf-item">
-                                <span class="perf-label">DOM Nodes</span>
-                                <span class="perf-value" id="domNodes">-</span>
-                            </div>
-                        </div>
-                        <div class="perf-progress">
-                            <div class="progress-item">
-                                <span class="progress-label">CPU Load</span>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" id="cpuProgress" style="width:32%"></div>
-                                </div>
-                                <span class="progress-value" id="cpuValue">32%</span>
-                            </div>
-                            <div class="progress-item">
-                                <span class="progress-label">Memory Load</span>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" id="memoryProgress" style="width:58%"></div>
-                                </div>
-                                <span class="progress-value" id="memoryValue">58%</span>
-                            </div>
-                            <div class="progress-item">
-                                <span class="progress-label">System Health</span>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" id="healthProgress" style="width:85%"></div>
-                                </div>
-                                <span class="progress-value" id="healthValue">85%</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- ====== 5. QUICK COMMANDS ====== -->
-                <section class="widget widget-shortcuts">
-                    <div class="widget-header">
-                        <div class="widget-header-left">
-                            <h3><i class="fas fa-terminal"></i> Quick Commands</h3>
-                            <span class="widget-subtitle">Console shortcuts</span>
-                        </div>
-                    </div>
-                    <div class="widget-body">
-                        <div class="shortcut-grid">
-                            <div class="shortcut-item" onclick="window.report()">
-                                <code>report()</code>
-                                <span>Generate full report</span>
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                            <div class="shortcut-item" onclick="window.getLogs()">
-                                <code>getLogs()</code>
-                                <span>View all logs</span>
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                            <div class="shortcut-item" onclick="window.clearLogs()">
-                                <code>clearLogs()</code>
-                                <span>Clear log entries</span>
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                            <div class="shortcut-item" onclick="window.debugOn()">
-                                <code>debugOn()</code>
-                                <span>Enable debug mode</span>
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                            <div class="shortcut-item" onclick="window.debugOff()">
-                                <code>debugOff()</code>
-                                <span>Disable debug mode</span>
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                            <div class="shortcut-item" onclick="window.exportLogs()">
-                                <code>exportLogs()</code>
-                                <span>Export logs as JSON</span>
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- ====== 6. SYSTEM INFO ====== -->
-                <section class="widget widget-system">
-                    <div class="widget-header">
-                        <div class="widget-header-left">
-                            <h3><i class="fas fa-server"></i> System Information</h3>
-                            <span class="widget-subtitle">Environment details</span>
-                        </div>
-                    </div>
-                    <div class="widget-body">
-                        <div class="sys-grid">
-                            <div class="sys-item">
-                                <span class="sys-label">Browser</span>
-                                <span class="sys-value" id="browserInfo">-</span>
-                            </div>
-                            <div class="sys-item">
-                                <span class="sys-label">OS</span>
-                                <span class="sys-value" id="osInfo">-</span>
-                            </div>
-                            <div class="sys-item">
-                                <span class="sys-label">Screen</span>
-                                <span class="sys-value" id="screenInfo">-</span>
-                            </div>
-                            <div class="sys-item">
-                                <span class="sys-label">Language</span>
-                                <span class="sys-value" id="langInfo">-</span>
-                            </div>
-                            <div class="sys-item">
-                                <span class="sys-label">Time Zone</span>
-                                <span class="sys-value" id="tzInfo">-</span>
-                            </div>
-                            <div class="sys-item">
-                                <span class="sys-label">Connection</span>
-                                <span class="sys-value" id="connInfo">-</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-            </div>
-
-            <!-- ===== FOOTER ===== -->
-            <footer class="main-footer">
-                <div class="footer-left">
-                    <p>Loker Kendari Enterprise Monitor v2.0</p>
-                    <span class="footer-divider">|</span>
-                    <span id="footerTime">-</span>
+            <!-- Shortcut Commands -->
+            <section class="panel panel-shortcuts">
+                <div class="panel-header">
+                    <h2><i class="fas fa-terminal"></i> Shortcut Console</h2>
                 </div>
-                <div class="footer-right">
-                    <span class="footer-status">
-                        <span class="status-dot"></span>
-                        All systems operational
-                    </span>
+                <div class="panel-body">
+                    <div class="shortcut-list">
+                        <div class="shortcut-item">
+                            <code>report()</code>
+                            <span>Lihat laporan lengkap</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <code>getLogs()</code>
+                            <span>Lihat semua log</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <code>clearLogs()</code>
+                            <span>Hapus semua log</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <code>debugOn()</code>
+                            <span>Aktifkan debug mode</span>
+                        </div>
+                    </div>
                 </div>
-            </footer>
+            </section>
+        </div>
 
-        </main>
+        <!-- Footer -->
+        <footer class="monitor-footer">
+            <p>Loker Kendari Monitor v2.0 &bull; <span id="liveTime">-</span></p>
+        </footer>
     </div>
 
+    <!-- Hanya monitor.js, tidak ada loader.js -->
     <script src="monitor.js"></script>
 </body>
 </html>
