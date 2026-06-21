@@ -10,34 +10,64 @@ function initApp() {
     initInbox();
     initExplore();
 
-    // Copilot
-    const navCopilot = document.getElementById('navCopilot');
-    if (navCopilot) {
-        navCopilot.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-            alert('🤖 Copilot: Siap membantu Anda menemukan lowongan terbaik di Kendari! Silakan tanyakan apa saja.');
-        });
-    }
+    // ===== NAVIGASI =====
+    const navLinks = document.querySelectorAll('.nav-link');
+    const currentPath = window.location.pathname;
 
-    // Home active state
-    document.querySelector('.nav-link[href="#home"]')?.addEventListener('click', function() {
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
+    // Set active state berdasarkan URL
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        // Cek apakah link mengarah ke halaman yang sedang aktif
+        const isActive = (href === '/' && currentPath === '/') ||
+                         (href.startsWith('/#') && currentPath === '/' && window.location.hash === href.substring(1)) ||
+                         (href === '/upload/' && currentPath.startsWith('/upload')) ||
+                         (href !== '/' && href !== '/upload/' && currentPath === href);
+
+        if (isActive) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
     });
 
-    // Hamburger menu
+    // Event listener untuk setiap link (update active state saat diklik)
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Biarkan link berfungsi normal (tidak preventDefault)
+            // Hanya update active state
+            navLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+
+            // Tutup menu mobile saat link diklik
+            const navMenu = document.querySelector('.nav-menu');
+            if (navMenu) {
+                navMenu.classList.remove('open');
+            }
+        });
+    });
+
+    // ===== HAMBURGER MENU =====
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.querySelector('.nav-menu');
     if (hamburger && navMenu) {
-        hamburger.addEventListener('click', () => {
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation();
             navMenu.classList.toggle('open');
+            // Toggle class active pada hamburger untuk animasi
+            this.classList.toggle('active');
         });
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('open');
-            });
+
+        // Tutup menu saat klik di luar (mobile)
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                const isClickInside = navMenu.contains(e.target) || hamburger.contains(e.target);
+                if (!isClickInside && navMenu.classList.contains('open')) {
+                    navMenu.classList.remove('open');
+                    hamburger.classList.remove('active');
+                }
+            }
         });
     }
 
