@@ -1,10 +1,11 @@
-// ===== GLOBAL ERROR =====
-// Menangkap error runtime dan promise rejection
+// ============================================================
+// GLOBAL-ERROR.JS - Tangkap Error Runtime & Promise Rejection
+// ============================================================
 
 import { showNotification } from './notification.js';
 
 (function() {
-    // Error runtime
+    // ===== Error Runtime =====
     window.onerror = function(message, source, lineno, colno, error) {
         console.groupCollapsed('%c⚠️ ERROR DETEKSI', 'background: #ef4444; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;');
         console.error('📌 Pesan:', message);
@@ -17,7 +18,7 @@ import { showNotification } from './notification.js';
         return true;
     };
 
-    // Promise rejection
+    // ===== Promise Rejection =====
     window.addEventListener('unhandledrejection', function(event) {
         console.groupCollapsed('%c⚠️ PROMISE REJECTION', 'background: #ef4444; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;');
         console.error('📌 Alasan:', event.reason);
