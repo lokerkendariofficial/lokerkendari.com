@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background rounded square -->
+  <rect x="0" y="0" width="200" height="200" rx="40" fill="url(#grad2)"/>
+  
+  <!-- Briefcase icon -->
+  <rect x="40" y="60" width="120" height="90" rx="16" fill="#ffffff" opacity="0.9"/>
+  <rect x="55" y="75" width="90" height="55" rx="8" fill="url(#grad2)"/>
+  <rect x="65" y="85" width="70" height="30" rx="4" fill="#ffffff" opacity="0.4"/>
+  
+  <!-- Handle -->
+  <rect x="70" y="45" width="60" height="18" rx="6" fill="#ffffff" opacity="0.7"/>
+  
+  <!-- Text: LK -->
+  <text x="100" y="165" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">
+    LK
+  </text>
+</svg>
