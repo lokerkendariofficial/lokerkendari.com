@@ -1,12 +1,8 @@
-// ============================================================
-// FORM.JS - Logika Form (Preview, Submit, Validasi)
-// ============================================================
-
-import { addInfoItem } from './data.js';
+import { addInfoItem } from './upload-data.js';
 import { escapeHtml, renderList } from './render.js';
 import { showToast } from './toast.js';
 
-// DOM REFS
+// ===== DOM REFS =====
 const title = document.getElementById('title');
 const category = document.getElementById('category');
 const date = document.getElementById('date');
@@ -19,7 +15,7 @@ const previewSection = document.getElementById('previewSection');
 const previewBox = document.getElementById('previewBox');
 const form = document.getElementById('uploadForm');
 
-// Get form data
+// ===== GET FORM DATA =====
 export function getFormData() {
     return {
         title: title.value.trim(),
@@ -32,7 +28,7 @@ export function getFormData() {
     };
 }
 
-// Preview informasi
+// ===== PREVIEW =====
 export function previewInfo() {
     const data = getFormData();
     if (!data.title || !data.category || !data.description) {
@@ -64,24 +60,21 @@ export function previewInfo() {
     showToast('Preview berhasil dimuat.', 'info');
 }
 
-// Submit form
+// ===== SUBMIT =====
 export function submitForm(e) {
     e.preventDefault();
 
     const data = getFormData();
 
-    // Validasi
     if (!data.title) { showToast('Judul harus diisi.', 'error'); title.focus(); return; }
     if (!data.category) { showToast('Pilih kategori.', 'error'); category.focus(); return; }
     if (!data.description) { showToast('Deskripsi harus diisi.', 'error'); description.focus(); return; }
     if (data.description.length < 10) { showToast('Deskripsi minimal 10 karakter.', 'error'); description.focus(); return; }
 
-    // Nonaktifkan tombol submit & tampilkan loading
     const submitBtn = form.querySelector('.btn-submit');
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
 
-    // Simpan data
     const newItem = {
         id: Date.now(),
         title: data.title,
@@ -97,15 +90,12 @@ export function submitForm(e) {
     addInfoItem(newItem);
     renderList();
 
-    // Reset form & preview
     form.reset();
     previewSection.style.display = 'none';
     previewBox.innerHTML = '';
 
-    // Toast sukses + redirect
     showToast('✅ Informasi berhasil dikirim! Sedang diproses...', 'success');
 
-    // Redirect ke beranda setelah 2 detik
     setTimeout(() => {
         window.location.href = 'https://lokerkendariofficial.github.io/lokerkendari.com/';
     }, 2000);
