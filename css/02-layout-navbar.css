@@ -9,6 +9,7 @@
     top: 0;
     z-index: 1000;
     padding: 8px 0;
+    /* margin-left dan width diatur di 11-components-sidebar.css */
 }
 
 .nav-container {
@@ -95,4 +96,14 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+/* ===== Responsif Navbar di Mobile ===== */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 0 16px;
+    }
+    .logo img {
+        height: 28px;
+    }
 }
