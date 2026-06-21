@@ -1,0 +1,63 @@
+/* ============================================================
+   BADGES.CSS - Gaya Label / Badge (Mengikuti Tema Aktif)
+   ============================================================ */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 12px;
+    border-radius: var(--radius-full, 9999px);
+    font-size: var(--font-size-xs, 0.75rem);
+    font-weight: var(--font-weight-semibold, 600);
+    line-height: 1.6;
+    background: var(--color-bg, #f1f5f9);
+    color: var(--color-text, #1e293b);
+    border: 1px solid var(--color-border, #e2e8f0);
+}
+
+.badge-primary {
+    background: var(--color-primary, #2563eb);
+    color: #ffffff;
+    border-color: var(--color-primary, #2563eb);
+}
+
+.badge-success {
+    background: var(--color-success, #22c55e);
+    color: #ffffff;
+    border-color: var(--color-success, #22c55e);
+}
+
+.badge-warning {
+    background: var(--color-warning, #f59e0b);
+    color: #ffffff;
+    border-color: var(--color-warning, #f59e0b);
+}
+
+.badge-danger {
+    background: var(--color-danger, #ef4444);
+    color: #ffffff;
+    border-color: var(--color-danger, #ef4444);
+}
+
+.badge-info {
+    background: var(--color-info, #3b82f6);
+    color: #ffffff;
+    border-color: var(--color-info, #3b82f6);
+}
+
+.badge-outline {
+    background: transparent;
+    color: var(--color-primary, #2563eb);
+    border: 2px solid var(--color-primary, #2563eb);
+}
+
+.badge-sm {
+    font-size: 0.6rem;
+    padding: 1px 8px;
+}
+
+.badge-lg {
+    font-size: 0.85rem;
+    padding: 4px 16px;
+}
