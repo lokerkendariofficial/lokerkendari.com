@@ -1,7 +1,3 @@
-// ============================================================
-// NAV-HANDLER.JS - Logika Hamburger Menu (Mobile)
-// ============================================================
-
 export function initNav() {
     const hamburger = document.getElementById('hamburgerBtn');
     const mobileMenu = document.getElementById('mobileMenu');
@@ -11,7 +7,6 @@ export function initNav() {
         return;
     }
 
-    // Buat overlay jika belum ada
     let overlay = document.querySelector('.menu-overlay');
     if (!overlay) {
         overlay = document.createElement('div');
@@ -33,7 +28,6 @@ export function initNav() {
         document.body.style.overflow = '';
     }
 
-    // ===== KLIK HAMBURGER =====
     hamburger.addEventListener('click', function(e) {
         e.stopPropagation();
         if (mobileMenu.classList.contains('active')) {
@@ -43,17 +37,14 @@ export function initNav() {
         }
     });
 
-    // ===== KLIK OVERLAY =====
     overlay.addEventListener('click', closeMenu);
 
-    // ===== KLIK LINK DI MENU =====
     mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', function() {
             closeMenu();
         });
     });
 
-    // ===== TOMBOL ESC =====
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
             closeMenu();
