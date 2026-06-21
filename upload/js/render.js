@@ -1,10 +1,5 @@
-// ============================================================
-// RENDER.JS - Render Daftar Informasi
-// ============================================================
+import { getInfoList } from './upload-data.js';
 
-import { getInfoList } from './data.js';
-
-// Escape HTML untuk keamanan
 export function escapeHtml(text) {
     if (!text) return '';
     const div = document.createElement('div');
@@ -12,7 +7,6 @@ export function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// Render daftar informasi
 export function renderList() {
     const uploadedItems = document.getElementById('uploadedItems');
     const listCount = document.getElementById('listCount');
