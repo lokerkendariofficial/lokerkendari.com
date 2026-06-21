@@ -1,0 +1,155 @@
+/* ============================================================
+   DESIGN-SYSTEM.CSS - Halaman Katalog Komponen
+   ============================================================ */
+
+/* Reset dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--color-bg, #f8fafc);
+    color: var(--color-text, #1e293b);
+    line-height: 1.6;
+}
+
+.ds-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+/* ===== HEADER ===== */
+.ds-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-bottom: 24px;
+    border-bottom: 2px solid var(--color-border, #e2e8f0);
+    margin-bottom: 32px;
+}
+
+.ds-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-text, #1e293b);
+}
+
+.ds-header p {
+    color: var(--color-text-muted, #64748b);
+    font-size: 1rem;
+}
+
+.ds-version {
+    background: var(--color-primary, #2563eb);
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: auto;
+}
+
+/* ===== THEME SWITCHER ===== */
+.ds-theme-switcher {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 16px 0;
+}
+
+.ds-theme-btn {
+    padding: 8px 20px;
+    border: 2px solid var(--color-border, #e2e8f0);
+    border-radius: 50px;
+    background: var(--color-card-bg, #fff);
+    color: var(--color-text, #1e293b);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.ds-theme-btn:hover {
+    border-color: var(--color-primary, #2563eb);
+}
+
+.ds-theme-btn.active {
+    border-color: var(--color-primary, #2563eb);
+    background: var(--color-primary, #2563eb);
+    color: #fff;
+}
+
+/* ===== SECTION ===== */
+.ds-section {
+    margin-bottom: 48px;
+}
+
+.ds-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text, #1e293b);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--color-border, #e2e8f0);
+}
+
+/* ===== TOKENS ===== */
+.ds-tokens-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.ds-token-card {
+    background: var(--color-card-bg, #fff);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border, #e2e8f0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.ds-token-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--color-text, #1e293b);
+}
+
+.ds-color-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.ds-color-swatch {
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ===== COMPONENT GRID ===== */
+.ds-component-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    padding: 16px 0;
+}
+
+/* ===== FOOTER ===== */
+.ds-footer {
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border, #e2e8f0);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #64748b);
+}
