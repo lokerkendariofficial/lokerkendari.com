@@ -19,6 +19,19 @@
     padding: 0;
 }
 
+/* ===== KONTEN UTAMA ===== */
+#app {
+    margin-left: 280px;  /* ← Kunci: geser konten ke kanan sebesar lebar sidebar */
+    min-height: 100vh;
+}
+
+/* ===== NAVBAR HARUS MENGIKUTI ===== */
+.navbar {
+    margin-left: 280px;  /* ← Navbar juga ikut bergeser */
+    width: calc(100% - 280px);
+}
+
+/* ===== RESPONSIF: Mobile ===== */
 @media (max-width: 768px) {
     .sidebar-left {
         transform: translateX(-100%);
@@ -28,143 +41,13 @@
     .sidebar-left.open {
         transform: translateX(0);
     }
-}
 
-/* ===== SIDEBAR HEADER ===== */
-.sidebar-header {
-    padding: 24px 20px 20px;
-    border-bottom: 1px solid var(--color-border, #e2e8f0);
-}
+    #app {
+        margin-left: 0;  /* ← Reset di mobile */
+    }
 
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.user-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    overflow: hidden;
-    flex-shrink: 0;
-    background: var(--color-primary, #2563eb);
-}
-
-.user-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.user-info h4 {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--color-text, #1e293b);
-    margin: 0;
-}
-
-.user-info span {
-    font-size: 0.75rem;
-    color: var(--color-text-muted, #64748b);
-}
-
-/* ===== SIDEBAR NAV ===== */
-.sidebar-nav {
-    flex: 1;
-    padding: 16px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.sidebar-link {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 10px 14px;
-    border-radius: var(--radius-md, 8px);
-    color: var(--color-text, #1e293b);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: all 0.2s;
-    position: relative;
-}
-
-.sidebar-link:hover {
-    background: var(--color-bg, #f1f5f9);
-}
-
-.sidebar-link.active {
-    background: var(--color-primary-light, #dbeafe);
-    color: var(--color-primary, #2563eb);
-}
-
-.sidebar-link i {
-    width: 20px;
-    text-align: center;
-    font-size: 1.1rem;
-    color: var(--color-text-muted, #64748b);
-}
-
-.sidebar-link.active i {
-    color: var(--color-primary, #2563eb);
-}
-
-.sidebar-link .badge-count {
-    margin-left: auto;
-    background: var(--color-primary, #2563eb);
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 1px 10px;
-    border-radius: 50px;
-    line-height: 1.8;
-}
-
-.sidebar-link.logout {
-    margin-top: 8px;
-    border-top: 1px solid var(--color-border, #e2e8f0);
-    padding-top: 12px;
-    color: var(--color-danger, #ef4444);
-}
-
-.sidebar-link.logout i {
-    color: var(--color-danger, #ef4444);
-}
-
-/* ===== SIDEBAR FOOTER ===== */
-.sidebar-footer {
-    padding: 16px 20px;
-    border-top: 1px solid var(--color-border, #e2e8f0);
-}
-
-.app-promo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    background: var(--color-primary-light, #dbeafe);
-    border-radius: var(--radius-md, 8px);
-}
-
-.app-promo i {
-    font-size: 1.5rem;
-    color: var(--color-primary, #2563eb);
-}
-
-.app-promo h5 {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--color-primary, #2563eb);
-    margin: 0;
-    letter-spacing: 0.3px;
-}
-
-.app-promo span {
-    font-size: 0.6rem;
-    color: var(--color-primary, #2563eb);
-    opacity: 0.7;
-    display: block;
+    .navbar {
+        margin-left: 0;
+        width: 100%;
+    }
 }
