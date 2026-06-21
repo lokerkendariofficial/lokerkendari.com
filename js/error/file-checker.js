@@ -1,18 +1,32 @@
 // ============================================================
-// FILE-CHECKER.JS - Memeriksa File Penting
+// FILE-CHECKER.JS - Memeriksa File Penting (Peta 2.0)
 // ============================================================
 
 import { showNotification } from './notification.js';
 
 (function() {
     const files = [
+        // Root
         'style.css',
         'script.js',
-        'loader.js',
-        'js/data.js',
-        'js/main.js',
+        'index.html',
+
+        // Core JS
+        'js/core/error-handler.js',
+
+        // Main JS modules
+        'js/app-data.js',
+        'js/app-main.js',
+        'js/nav-handler.js',
         'js/inbox.js',
-        'js/explore.js'
+        'js/explore.js',
+
+        // Error modules
+        'js/error/global-error.js',
+        'js/error/console-override.js',
+        'js/error/notification.js',
+        'js/error/file-checker.js',
+        'js/error/system-info.js'
     ];
 
     console.log('%c📁 Cek file penting...', 'background: #3b82f6; color: #fff; padding: 4px 8px; border-radius: 4px;');
