@@ -1,5 +1,16 @@
-/* ===== FILE INDUK CSS ===== */
-@import url('css/base.css');
-@import url('css/layout.css');
-@import url('css/components.css');
-@import url('css/responsive.css');
+/* ============================================================
+   STYLE.CSS - FILE INDUK CSS
+   ============================================================ */
+
+@import url('css/01-reset.css');
+@import url('css/02-layout-navbar.css');
+@import url('css/03-layout-hero.css');
+@import url('css/04-layout-stats.css');
+@import url('css/05-layout-about.css');
+@import url('css/06-layout-footer.css');
+@import url('css/07-components-buttons.css');
+@import url('css/08-components-filter.css');
+@import url('css/09-components-jobs.css');
+@import url('css/10-components-modal.css');
+@import url('css/11-components-sidebar.css');
+@import url('css/12-responsive.css');
