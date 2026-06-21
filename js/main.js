@@ -133,7 +133,6 @@ export function loadJobs() {
     if (loadingIndicator) loadingIndicator.classList.add('active');
     if (jobsGrid) jobsGrid.innerHTML = '';
 
-    // Gunakan data dari defaultJobs
     jobsData = defaultJobs;
 
     if (loadingIndicator) loadingIndicator.classList.remove('active');
