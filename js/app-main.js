@@ -1,9 +1,23 @@
+// ============================================================
+// APP-MAIN.JS - Logika Utama + Perakit Komponen
+// ============================================================
+
+// ===== IMPOR SEMUA KOMPONEN DARI components/ =====
+import { navbar } from '../components/navbar.js';
+import { hero } from '../components/hero.js';
+import { stats } from '../components/stats.js';
+import { filter } from '../components/filter.js';
+import { jobs } from '../components/jobs.js';
+import { about } from '../components/about.js';
+import { inbox } from '../components/inbox.js';
+import { explore } from '../components/explore.js';
+import { footer } from '../components/footer.js';
+
+// ===== IMPOR DATA & FUNGSI =====
 import { defaultJobs } from './app-data.js';
 
-// ===== STATE =====
-let jobsData = [];
-
 // ===== DOM REFS =====
+const app = document.getElementById('app');
 const jobsGrid = document.getElementById('jobsGrid');
 const loadingIndicator = document.getElementById('loadingIndicator');
 const emptyState = document.getElementById('emptyState');
@@ -12,16 +26,30 @@ const searchBtn = document.getElementById('searchBtn');
 const categoryFilter = document.getElementById('categoryFilter');
 const sortFilter = document.getElementById('sortFilter');
 
-// ===== FUNCTIONS =====
+// ===== STATE =====
+let jobsData = [];
 
-// Format tanggal
+// ===== RAKIT SEMUA KOMPONEN KE #app =====
+export function renderComponents() {
+    if (!app) {
+        console.error('❌ Elemen #app tidak ditemukan!');
+        return;
+    }
+
+    const allComponents = navbar + hero + stats + filter + jobs + about + inbox + explore + footer;
+    app.innerHTML = allComponents;
+
+    console.log('✅ Semua komponen berhasil dirakit!');
+}
+
+// ===== FORMAT TANGGAL =====
 export function formatDate(dateString) {
     const date = new Date(dateString);
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-// Render job cards
+// ===== RENDER JOBS =====
 export function renderJobs(jobs) {
     if (!jobs || jobs.length === 0) {
         jobsGrid.innerHTML = '';
@@ -52,7 +80,7 @@ export function renderJobs(jobs) {
     `).join('');
 }
 
-// Filter dan sort jobs
+// ===== FILTER & SORT =====
 export function filterAndSortJobs() {
     const keyword = searchInput.value.toLowerCase().trim();
     const category = categoryFilter.value;
@@ -101,7 +129,7 @@ export function filterAndSortJobs() {
     renderJobs(result);
 }
 
-// Apply job (simulasi)
+// ===== APPLY JOB =====
 export function applyJob(id) {
     const job = jobsData.find(j => j.id === id);
     if (job) {
@@ -140,7 +168,7 @@ export function loadJobs() {
     animateStats();
 }
 
-// ===== EVENT LISTENERS UNTUK FILTER =====
+// ===== EVENT LISTENERS =====
 export function initMainEvents() {
     if (searchBtn) searchBtn.addEventListener('click', filterAndSortJobs);
     if (searchInput) {
@@ -150,4 +178,18 @@ export function initMainEvents() {
     }
     if (categoryFilter) categoryFilter.addEventListener('change', filterAndSortJobs);
     if (sortFilter) sortFilter.addEventListener('change', filterAndSortJobs);
+}
+
+// ===== INISIALISASI AWAL =====
+export function initAppMain() {
+    // 1. Rakit semua komponen ke #app
+    renderComponents();
+
+    // 2. Load data & render jobs
+    loadJobs();
+
+    // 3. Pasang event listener
+    initMainEvents();
+
+    console.log('✅ AppMain siap!');
 }
