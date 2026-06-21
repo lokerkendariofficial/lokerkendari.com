@@ -2,21 +2,18 @@
 // SCRIPT.JS - FILE INDUK (Entry Point)
 // ============================================================
 
-import { loadJobs, initMainEvents } from './js/main.js';
+import { loadJobs, initMainEvents } from './js/app-main.js';
 import { initInbox } from './js/inbox.js';
 import { initExplore } from './js/explore.js';
-import { initNav } from './js/nav.js';
+import { initNav } from './js/nav-handler.js';
 
 function initApp() {
     console.log('🚀 Loker Kendari - Inisialisasi...');
 
-    // ===== FITUR UTAMA =====
     loadJobs();
     initMainEvents();
     initInbox();
     initExplore();
-
-    // ===== NAVIGASI (Hamburger + Sidebar) =====
     initNav();
 
     console.log('✅ Loker Kendari siap!');
@@ -39,7 +36,6 @@ if (isAppReady()) {
         initApp();
     });
 
-    // Fallback polling
     let attempts = 0;
     const maxAttempts = 50;
     const fallbackTimer = setInterval(() => {
