@@ -1,5 +1,7 @@
-// ===== ERROR HANDLER - FILE INDUK =====
-// Import semua modul error dari folder js/error/
+// ============================================================
+// ERROR-HANDLER.JS - File Induk
+// ============================================================
+// Mengimpor semua modul error dari folder js/error/
 
 import './js/error/global-error.js';
 import './js/error/console-override.js';
