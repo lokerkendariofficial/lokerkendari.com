@@ -1,0 +1,42 @@
+/* ============================================================
+   THEME-AQUA.CSS - Tema Biru Laut / Aqua
+   ============================================================ */
+
+[data-theme="aqua"] {
+    /* ===== Warna Dasar ===== */
+    --color-primary: #0ea5e9;
+    --color-primary-dark: #0284c7;
+    --color-primary-light: #e0f2fe;
+    --color-primary-gradient: linear-gradient(135deg, #0ea5e9, #06b6d4);
+
+    --color-secondary: #0c4a6e;
+    --color-secondary-light: #164e63;
+
+    /* ===== Warna Latar ===== */
+    --color-bg: #f0f9ff;
+    --color-card-bg: #ffffff;
+    --color-card-bg-hover: #e0f2fe;
+
+    /* ===== Warna Teks ===== */
+    --color-text: #0c4a6e;
+    --color-text-muted: #0284c7;
+    --color-text-light: #7dd3fc;
+
+    /* ===== Warna Border ===== */
+    --color-border: #bae6fd;
+    --color-border-focus: #0ea5e9;
+
+    /* ===== Warna Status ===== */
+    --color-success: #22c55e;
+    --color-success-bg: #dcfce7;
+    --color-warning: #f59e0b;
+    --color-warning-bg: #fef3c7;
+    --color-danger: #ef4444;
+    --color-danger-bg: #fee2e2;
+    --color-info: #0ea5e9;
+    --color-info-bg: #e0f2fe;
+
+    /* ===== Shadow ===== */
+    --shadow-color: rgba(14, 165, 233, 0.08);
+    --shadow-hover-color: rgba(14, 165, 233, 0.16);
+}
