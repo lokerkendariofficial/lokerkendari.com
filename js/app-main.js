@@ -3,7 +3,7 @@
 // ============================================================
 
 // ===== IMPOR SEMUA KOMPONEN DARI components/ =====
-import { navbar } from '../components/navbar.js';
+import { navbar } from '../components/menu/navbar.js';   // ← PATH DIUBAH
 import { hero } from '../components/hero.js';
 import { stats } from '../components/stats.js';
 import { filter } from '../components/filter.js';
@@ -182,14 +182,8 @@ export function initMainEvents() {
 
 // ===== INISIALISASI AWAL =====
 export function initAppMain() {
-    // 1. Rakit semua komponen ke #app
     renderComponents();
-
-    // 2. Load data & render jobs
     loadJobs();
-
-    // 3. Pasang event listener
     initMainEvents();
-
     console.log('✅ AppMain siap!');
 }
